@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yudong.dao.UsersDao">
+  <resultMap id="BaseResultMap" type="com.yudong.entity.Users">
+    <id column="iUserId" jdbcType="INTEGER" property="userId" />
+    <result column="vUserName" jdbcType="VARCHAR" property="userName" />
+    <result column="vPassword" jdbcType="VARCHAR" property="password" />
+    <result column="vUserNickName" jdbcType="VARCHAR" property="userNickName" />
+    <result column="iRole" jdbcType="INTEGER" property="role" />
+    <result column="vHeadImage" jdbcType="VARCHAR" property="headImage" />
+    <result column="dRegisteTime" jdbcType="TIMESTAMP" property="registeTime" />
+    <result column="vRegCode" jdbcType="VARCHAR" property="regCode" />
+    <result column="iUserState" jdbcType="INTEGER" property="userState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    iUserId, vUserName, vPassword, vUserNickName, iRole, vHeadImage, dRegisteTime, vRegCode, 
+    iUserState
+  </sql>
+  <!-- 根据ID查找用户 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where iUserId = #{userId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from users
+    where iUserId = #{userId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yudong.entity.Users">
+    insert into users (iUserId, vUserName, vPassword, 
+      vUserNickName, iRole, vHeadImage, 
+      dRegisteTime, vRegCode, iUserState
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userNickName,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{headImage,jdbcType=VARCHAR}, 
+      #{registeTime,jdbcType=TIMESTAMP}, #{regCode,jdbcType=VARCHAR}, #{userState,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yudong.entity.Users">
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        iUserId,
+      </if>
+      <if test="userName != null">
+        vUserName,
+      </if>
+      <if test="password != null">
+        vPassword,
+      </if>
+      <if test="userNickName != null">
+        vUserNickName,
+      </if>
+      <if test="role != null">
+        iRole,
+      </if>
+      <if test="headImage != null">
+        vHeadImage,
+      </if>
+      <if test="registeTime != null">
+        dRegisteTime,
+      </if>
+      <if test="regCode != null">
+        vRegCode,
+      </if>
+      <if test="userState != null">
+        iUserState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickName != null">
+        #{userNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="headImage != null">
+        #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="registeTime != null">
+        #{registeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regCode != null">
+        #{regCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        #{userState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yudong.entity.Users">
+    update users
+    <set>
+      <if test="userName != null">
+        vUserName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        vPassword = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickName != null">
+        vUserNickName = #{userNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        iRole = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="headImage != null">
+        vHeadImage = #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="registeTime != null">
+        dRegisteTime = #{registeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regCode != null">
+        vRegCode = #{regCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        iUserState = #{userState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where iUserId = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yudong.entity.Users">
+    update users
+    set vUserName = #{userName,jdbcType=VARCHAR},
+      vPassword = #{password,jdbcType=VARCHAR},
+      vUserNickName = #{userNickName,jdbcType=VARCHAR},
+      iRole = #{role,jdbcType=INTEGER},
+      vHeadImage = #{headImage,jdbcType=VARCHAR},
+      dRegisteTime = #{registeTime,jdbcType=TIMESTAMP},
+      vRegCode = #{regCode,jdbcType=VARCHAR},
+      iUserState = #{userState,jdbcType=INTEGER}
+    where iUserId = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yudong.dao.BookClassificationDao">
+  <resultMap id="BaseResultMap" type="com.yudong.entity.BookClassification">
+    <id column="iBookClassificationId" jdbcType="INTEGER" property="bookClassificationId" />
+    <result column="vBookClassificationName" jdbcType="VARCHAR" property="bookClassificationName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    iBookClassificationId, vBookClassificationName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book_classification
+    where iBookClassificationId = #{bookClassificationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book_classification
+    where iBookClassificationId = #{bookClassificationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yudong.entity.BookClassification">
+    insert into book_classification (iBookClassificationId, vBookClassificationName
+      )
+    values (#{bookClassificationId,jdbcType=INTEGER}, #{bookClassificationName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yudong.entity.BookClassification">
+    insert into book_classification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookClassificationId != null">
+        iBookClassificationId,
+      </if>
+      <if test="bookClassificationName != null">
+        vBookClassificationName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookClassificationId != null">
+        #{bookClassificationId,jdbcType=INTEGER},
+      </if>
+      <if test="bookClassificationName != null">
+        #{bookClassificationName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yudong.entity.BookClassification">
+    update book_classification
+    <set>
+      <if test="bookClassificationName != null">
+        vBookClassificationName = #{bookClassificationName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where iBookClassificationId = #{bookClassificationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yudong.entity.BookClassification">
+    update book_classification
+    set vBookClassificationName = #{bookClassificationName,jdbcType=VARCHAR}
+    where iBookClassificationId = #{bookClassificationId,jdbcType=INTEGER}
+  </update>
+</mapper>

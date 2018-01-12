@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- <classPathEntry location="E:\mysql-connector-java-5.1.40-bin.jar" /> -->
+	<context id="yudong_context" targetRuntime="MyBatis3">
+	    
+		<!-- 设置不生成注释 -->
+		<!-- 是否生成注释代时间戳 -->	    	    
+		<commentGenerator>
+			<property name="suppressDate" value="true"/> 
+	  		<property name="suppressAllComments" value="true"></property>
+		</commentGenerator>
+		<!-- 配置数据库连接 -->
+		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/yudong" 
+			driverClass="com.mysql.jdbc.Driver" 
+			password="" 
+			userId="root" />
+		<!-- 默认把Decimals转换成Integer -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false"></property>
+		</javaTypeResolver>
+		<!-- 生成的实体类 -->
+		<javaModelGenerator targetPackage="com.yudong.entity" targetProject="./src">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- mapper存放配置 -->
+		<sqlMapGenerator targetPackage="com.yudong.mapper" targetProject="./src" >
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- dao接口存放配置 -->
+		<javaClientGenerator targetPackage="com.yudong.dao" targetProject="./src" type="XMLMAPPER"  />
+		
+		<!--用户模块 -->
+		<table tableName="users" domainObjectName="Users" mapperName="UsersDao" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+		    <columnOverride column="iUserId" property="userId" />
+		    <columnOverride column="vUserName" property="userName" />
+		    <columnOverride column="vPassword" property="password" />
+		    <columnOverride column="vUserNickName" property="userNickName" />
+		    <columnOverride column="iRole" property="role" />
+		    <columnOverride column="vHeadImage" property="headImage" />
+		    <columnOverride column="vLoginAddress" property="loginAddress" />
+		    <columnOverride column="dRegisteTime" property="registeTime" />
+		    <columnOverride column="vRegCode" property="regCode" />
+		    <columnOverride column="iUserState" property="userState" />
+		</table>
+		
+		<!-- 图书模块 -->
+		<table tableName="books" domainObjectName="Books" mapperName="BooksDao" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+		    <columnOverride column="iBookId" property="bookId" />
+		    <columnOverride column="vBookName" property="bookName" />
+		    <columnOverride column="iBookClassificationId" property="bookClassificationId" />
+		    <columnOverride column="vBookIntroduction" property="bookIntroduction" />
+		    <columnOverride column="vBookAuthor" property="bookAuthor" />
+		    <columnOverride column="fBookSize" property="bookSize" />
+		    <columnOverride column="dBookPrice" property="bookPrice" />
+		    <columnOverride column="vBookCoverPath" property="bookCoverPath" />
+		    <columnOverride column="vBookLocation" property="bookLocation" />
+		    <columnOverride column="vUploadPerson" property="uploadPerson" />
+		    <columnOverride column="dUploadTime" property="uploadTime" />
+		    <columnOverride column="iBookState" property="bookState" />
+		    <columnOverride column="iBookDownloads" property="bookDownloads" />
+		</table> 
+		<table tableName="book_classification" domainObjectName="BookClassification" mapperName="BookClassificationDao" 
+			enableCountByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+		    <columnOverride column="iBookClassificationId" property="bookClassificationId" />
+		    <columnOverride column="vBookClassificationName" property="bookClassificationName" />
+		</table> 
+	</context>
+</generatorConfiguration>
