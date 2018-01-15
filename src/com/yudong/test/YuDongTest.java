@@ -29,5 +29,13 @@ public class YuDongTest {
 			System.out.println("userNickName : "+user.getUserNickName());
 		}
 	}
+	
+	//测试对象转换成json
+	@SuppressWarnings("static-access")
+	@Test
+	public void testObjectToString(){
+		Users user = userService.findUserById(1);
+		
+	}
 
 }
