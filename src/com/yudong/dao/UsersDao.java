@@ -3,15 +3,22 @@ package com.yudong.dao;
 import com.yudong.entity.Users;
 
 public interface UsersDao {
-    int deleteByPrimaryKey(Integer userId);
+	
+	Users selectByPrimaryKey(Integer userId);
+	Users selectByUserName(String vUserName);
+	int insert(Users record);
+	
+	
+	
+//    int deleteByPrimaryKey(Integer userId);
+//
+//
+//    int insertSelective(Users record);
+//
+//
+//    int updateByPrimaryKeySelective(Users record);
+//
+//    int updateByPrimaryKey(Users record);
 
-    int insert(Users record);
 
-    int insertSelective(Users record);
-
-    Users selectByPrimaryKey(Integer userId);
-
-    int updateByPrimaryKeySelective(Users record);
-
-    int updateByPrimaryKey(Users record);
 }

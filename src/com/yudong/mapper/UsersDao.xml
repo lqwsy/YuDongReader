@@ -11,35 +11,48 @@
     <result column="dRegisteTime" jdbcType="TIMESTAMP" property="registeTime" />
     <result column="vRegCode" jdbcType="VARCHAR" property="regCode" />
     <result column="iUserState" jdbcType="INTEGER" property="userState" />
+    <result column="vSalt" jdbcType="VARCHAR" property="salt" />
   </resultMap>
+  
   <sql id="Base_Column_List">
     iUserId, vUserName, vPassword, vUserNickName, iRole, vHeadImage, dRegisteTime, vRegCode, 
-    iUserState
+    iUserState,vSalt
   </sql>
+  
   <!-- 根据ID查找用户 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from users
-    where iUserId = #{userId,jdbcType=INTEGER}
+    where iUserId = #{userName,jdbcType=INTEGER}
   </select>
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from users
-    where iUserId = #{userId,jdbcType=INTEGER}
-  </delete>
+  <!-- 根据手机号查找密码 -->
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+	<include refid="Base_Column_List" />
+    from users
+    where vUserName = #{userName,jdbcType=VARCHAR}
+  </select>
   
+  
+  <!-- 添加用户 -->
   <insert id="insert" parameterType="com.yudong.entity.Users">
-    insert into users (iUserId, vUserName, vPassword, 
+    insert into users (vUserName, vPassword, 
       vUserNickName, iRole, vHeadImage, 
-      dRegisteTime, vRegCode, iUserState
+      dRegisteTime, vRegCode, iUserState,vSalt
       )
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{userNickName,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{headImage,jdbcType=VARCHAR}, 
-      #{registeTime,jdbcType=TIMESTAMP}, #{regCode,jdbcType=VARCHAR}, #{userState,jdbcType=INTEGER}
+      #{registeTime,jdbcType=TIMESTAMP}, #{regCode,jdbcType=VARCHAR}, #{userState,jdbcType=INTEGER},
+      #{salt,jdbcType=VARCHAR}
       )
   </insert>
   
+  <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from users
+    where iUserId = #{userId,jdbcType=INTEGER}
+  </delete>
   <insert id="insertSelective" parameterType="com.yudong.entity.Users">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -70,6 +83,9 @@
       <if test="userState != null">
         iUserState,
       </if>
+      <if test="salt != null">
+        vSalt,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -98,6 +114,9 @@
       </if>
       <if test="userState != null">
         #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -128,6 +147,9 @@
       <if test="userState != null">
         iUserState = #{userState,jdbcType=INTEGER},
       </if>
+      <if test="salt != null">
+        vSalt = #{salt,jdbcType=VARCHAR},
+      </if>
     </set>
     where iUserId = #{userId,jdbcType=INTEGER}
   </update>
@@ -140,7 +162,8 @@
       vHeadImage = #{headImage,jdbcType=VARCHAR},
       dRegisteTime = #{registeTime,jdbcType=TIMESTAMP},
       vRegCode = #{regCode,jdbcType=VARCHAR},
-      iUserState = #{userState,jdbcType=INTEGER}
-    where iUserId = #{userId,jdbcType=INTEGER}
-  </update>
+      iUserState = #{userState,jdbcType=INTEGER},
+      vSalt = #{salt,jdbcType=INTEGER},
+    where iUserId = #{userId,jdbcType=VARCHAR}
+  </update> -->
 </mapper>

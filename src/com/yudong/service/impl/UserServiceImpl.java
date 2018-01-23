@@ -20,4 +20,14 @@ public class UserServiceImpl implements UserService {
 		return usersDao.selectByPrimaryKey(userId);
 	}
 
+	@Override
+	public Users findUserByUserName(String userName) {
+		return usersDao.selectByUserName(userName);
+	}
+
+	@Override
+	public int addUser(Users user) {
+		return usersDao.insert(user);
+	}
+
 }

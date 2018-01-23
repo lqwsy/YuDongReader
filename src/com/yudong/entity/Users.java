@@ -20,8 +20,18 @@ public class Users {
     private String regCode;
 
     private Integer userState;
+    
+    private String salt;
 
-    public Integer getUserId() {
+    public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public Integer getUserId() {
         return userId;
     }
 
