@@ -49,6 +49,13 @@
       )
   </insert>
   
+  <!-- 根据手机号更新密码 -->
+  <update id="updatePasswordByUserName" parameterType="com.yudong.entity.Users">
+      update users set vPassword = #{password,jdbcType=VARCHAR} where vUserName = #{userName,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
   <!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from users
     where iUserId = #{userId,jdbcType=INTEGER}

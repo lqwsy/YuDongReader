@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
 		return usersDao.insert(user);
 	}
 
+	@Override
+	public int updatePassword(Users user){
+		return usersDao.updatePasswordByUserName(user);
+	}
+
 }

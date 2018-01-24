@@ -5,8 +5,9 @@ import com.yudong.entity.Users;
 public interface UsersDao {
 	
 	Users selectByPrimaryKey(Integer userId);
-	Users selectByUserName(String vUserName);
+	Users selectByUserName(String userName);
 	int insert(Users record);
+	int updatePasswordByUserName(Users user);
 	
 	
 	

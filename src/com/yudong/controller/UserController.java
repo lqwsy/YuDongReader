@@ -1,5 +1,7 @@
 package com.yudong.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,50 @@ public class UserController {
 			}else {
 				return 4;//密码错误
 			}
+		}
+	}
+	
+	/**
+	 * 客户端注册控制
+	 */
+	@RequestMapping(value = "/clientRegisterController", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public int clientRegisterController(HttpServletRequest request) {
+		String userName = request.getParameter("username");
+		String password = request.getParameter("password");
+		Users user = userService.findUserByUserName(userName);
+		if(user == null){//账号不存在,可以注册
+			user = new Users();
+			user.setUserName(userName);
+			user.setSalt(JavaMD5Util.generatorSalt());//生成盐值
+			user.setPassword(JavaMD5Util.encode(password, user.getSalt()));//密码加密加盐
+			user.setRole(2);
+			user.setHeadImage("default.jpg");
+			user.setRegisteTime(new Date());
+			user.setUserState(1);
+			userService.addUser(user);//保存用户注册信息
+			return 1;//返回注册成功标志
+		}else {
+			return 3;//账号已存在，无法注册
+		}
+	}
+	
+	
+	/**
+	 * 客户端忘记密码控制
+	 */
+	@RequestMapping(value = "/clientForgetController", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public int clientForgetController(HttpServletRequest request) {
+		String userName = request.getParameter("username");
+		String password = request.getParameter("password");
+		Users user = userService.findUserByUserName(userName);
+		if(user != null){//账号存在
+			user.setPassword(JavaMD5Util.encode(password, user.getSalt()));//更换新密码
+			userService.updatePassword(user);//保存到数据库
+			return 1;//返回更改成功标志
+		}else {
+			return 3;//账号不存在
 		}
 	}
 }
