@@ -7,12 +7,13 @@
 <title>登录页面</title>
 </head>
 <body>
-	<form>
-		用户名：<input type="text" name="username" class="username"/>
+	<form id="loginForm" action="${pageContext.request.contextPath}/webLoginController" method="post">
+		用户名：<input type="text" name="userName" class="username"/>
 		<br/>
 		密码：<input type="password" name="password" class="password"/>
 		<br/>
 			<input type="submit" value ="提交">
+			<span id="login_result">${login_result}</span>
 	</form>
 </body>
 </html>

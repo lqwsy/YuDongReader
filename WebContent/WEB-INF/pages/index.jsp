@@ -8,5 +8,8 @@
 </head>
 <body>
 	<H1>欢迎来到鱼洞阅读</H1>
+	<a href="${pageContext.request.contextPath}/webLogin">登录</a>
+	<a href="${pageContext.request.contextPath}/webRegister">注册</a>
+	<a href="${pageContext.request.contextPath}/bookUpload">图书上传</a>
 </body>
 </html>
