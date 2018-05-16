@@ -1,22 +1,28 @@
 package com.yudong.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,24 +55,31 @@ public class BookController {
 	 */
 	@RequestMapping(value = "/bookUploadController", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String bookUploadController(MultipartFile file, HttpServletRequest request) {
+	public String bookUploadController(MultipartFile book,MultipartFile bookimg, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("static/books");
+		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg");
 		System.out.println("bookupload : path is =" + path);
-		String fileName = file.getOriginalFilename();
+		System.out.println("bookupload : imgpath is =" + imgpath);
+		String fileName = book.getOriginalFilename();
+		String imgName = bookimg.getOriginalFilename();
+		System.out.println("bookupload : imgName is =" + imgName);
 		System.out.println("bookupload : fileName is =" + fileName);
 		try {
 			File dir = new File(path, fileName);
-			if (!dir.exists()) {
+			File imgdir = new File(imgpath, imgName);
+			if (!dir.exists() && !imgdir.exists()) {
 				dir.mkdirs();
+				imgdir.mkdirs();
 			}
-			file.transferTo(dir);
-			return fileName;
+			book.transferTo(dir);
+			bookimg.transferTo(imgdir);
+			return fileName+imgName;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return fileName;
+		return fileName+imgName;
 	}
 
 	/**
@@ -137,6 +150,39 @@ public class BookController {
 		}
 
 		return booksList;
+	}
+	
+	/**
+	 * 图片上传
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@PostMapping("uploadImage")
+    @ResponseBody
+	public String personalUploadControll(HttpSession session,HttpServletRequest request,String img,Model model) {
+		
+		String serverPath = request.getSession().getServletContext().getRealPath("/");//获取项目运行路径  
+        Base64 base64 = new Base64();
+        
+        try {  
+            //实际的图片数据是从 data:image/jpeg;base64, 后开始的  
+            byte[] k = base64.decode(img.substring("data:image/jpeg;base64,".length()));  
+            InputStream is = new ByteArrayInputStream(k);  
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");// 图片上传日期
+			String fileName = "static/bookimg/" + formatter.format(new Date()) + ".jpg";//用日期来作为图片唯一名称
+			
+			String imgFilePath = serverPath  + fileName;//图片绝对路径  
+            BufferedImage image = ImageIO.read(is);   
+            ImageIO.write(image, "jpg", new File(imgFilePath));//保存图片到本地
+            File file = new File(serverPath + fileName);
+    		if(file.exists()){
+    			file.delete();
+    		}
+            return fileName;  
+        } catch (Exception e) {  
+            e.printStackTrace();
+            return "error";  
+        }
 	}
 
 }
