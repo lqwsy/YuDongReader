@@ -111,20 +111,21 @@ public class BookController {
 		System.out.println("client ip is === "+IPUtils.getIpAddr(request));
 		
 		List<Books> booksList = new ArrayList<>();
-		String[] books = {"book001.txt","book002.txt","book003.txt","book004.txt","book005.txt","book006.txt","book007.txt"};
-		String[] bookNames = { "巴比伦尘封6000年的财富智慧", "余华-兄弟", "被毁灭的人", "斗破苍穹" , "大宋王侯" , "乱明" , "1855美国大亨" };
-		String[] bookImgs = { "a.jpg", "b.jpg", "c.jpg", "d.jpg" , "e.jpg", "f.jpg", "g.jpg"};
-		String[] bookAuthors = { "Richest Man", "余华", "[美] 阿尔弗雷德·贝斯特   ", "天蚕土豆 " , "九孔 ", "喻心 ", "奶瓶战斗机 "};
+		String[] books = {"book001.txt","book002.txt","book003.txt","book004.txt","book005.txt","book006.txt","book007.txt","book008.txt"};
+		String[] bookNames = { "巴比伦尘封6000年的财富智慧", "余华-兄弟", "被毁灭的人", "斗破苍穹" , "大宋王侯" , "乱明" , "1855美国大亨" ,"中华国学300句"};
+		String[] bookImgs = { "a.jpg", "b.jpg", "c.jpg", "d.jpg" , "e.jpg", "f.jpg", "g.jpg", "h.jpg"};
+		String[] bookAuthors = { "Richest Man", "余华", "[美] 阿尔弗雷德·贝斯特   ", "天蚕土豆 " , "九孔 ", "喻心 ", "奶瓶战斗机 " ,"未知"};
 		String[] bookIntros = { "几年前，当我在美国读书的时候，无意中发现了这样一本小册子--《The Richest Man in Babylon》，讲述的是关于巴比伦的理财故事。",
 				"我们刘镇的超级巨富李光头异想天开，打算花上两千万美元的买路钱，搭乘俄罗斯联盟号飞船上太空去游览一番。",
 				"无穷无尽的宇宙中万事因循旧轨，无异无新。渺不足道的人类自以为是巨变的奇迹，在上帝巨眼观照之下却只不过是必然发生的寻常事。",
 				"望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，唇角有着一抹自嘲，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中。",
 				"一块奇异玉佩，得以梦回北宋初期，鲜血浸染了边关，杀戮遍及南北，华夏江山四分五裂，异族的铁蹄占去了半壁江山，此恨何及？此憾何结？ 我的故事只有金戈铁马的热血豪情，江湖厮杀的精彩绝伦，官场争斗的惊心动魄，儿女情长的荡气回肠。",
 				"身逢乱世，惨遭家门巨变，是提三尺剑斩妖除魔，还是苦苦寻觅万世太平之策……",
-				"1855，这是最好的时代，延伸的铁路，轰鸣的机车，流淌的黄金铸成了高耸入云的通天塔；这是一个最坏的时代，在通天塔那浓黑的阴影里，南北对立，贫富悬殊，弱肉强食。不想留在通天塔的阴影里任人践踏，就必须攀上它辉煌的塔顶，将一切踩在脚下。"};
-		Integer[] bookDoanload = { 3215, 5410, 7874, 754 ,323,556,245};
+				"1855，这是最好的时代，延伸的铁路，轰鸣的机车，流淌的黄金铸成了高耸入云的通天塔；这是一个最坏的时代，在通天塔那浓黑的阴影里，南北对立，贫富悬殊，弱肉强食。不想留在通天塔的阴影里任人践踏，就必须攀上它辉煌的塔顶，将一切踩在脚下。",
+				"国学，一国所固有之学术也。国学和文学数学的意思不同，并非是国家之学或者治国之学。一般来说，国学是指以儒学为主体的中华传统文化与学术。"};
+		Integer[] bookDoanload = { 3215, 5410, 7874, 754 ,323,556,245,2033};
 
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < books.length; i++) {
 			Books book = new Books();
 			book.setBookName(bookNames[i]);
 			System.out.println(book.getBookName());
