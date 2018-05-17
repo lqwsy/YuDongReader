@@ -1,6 +1,7 @@
 package com.yudong.test;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.yudong.entity.Books;
 import com.yudong.entity.Users;
+import com.yudong.service.BookService;
 import com.yudong.service.UserService;
 import com.yudong.utils.JavaMD5Util;
 /**
@@ -21,6 +24,8 @@ public class YuDongTest {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BookService bookService;
 	
 	//测试框架搭建是否成功
 	@Test
@@ -55,6 +60,14 @@ public class YuDongTest {
 		
 		System.out.println("result is : "+userService.addUser(user));
 		
+	}
+	
+	@Test
+	public void testGetBooks(){
+		List<Books> books = bookService.getBooks();
+		for(int i=0;i<books.size();i++){
+			System.out.println(books.get(i).getBookName()+"==="+books.get(i).getBookDownloads());
+		}
 	}
 
 }

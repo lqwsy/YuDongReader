@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yudong.entity.Books;
 import com.yudong.service.BookService;
+import com.yudong.utils.FileUtils;
 import com.yudong.utils.IPUtils;
 
 /**
@@ -55,15 +56,36 @@ public class BookController {
 	 */
 	@RequestMapping(value = "/bookUploadController", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String bookUploadController(MultipartFile book,MultipartFile bookimg, HttpServletRequest request) {
-		String path = request.getSession().getServletContext().getRealPath("static/books");
-		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg");
+	public String bookUploadController(Books book,MultipartFile bookFile,MultipartFile bookimgFile, HttpServletRequest request) {
+		String path = request.getSession().getServletContext().getRealPath("static/books/");
+		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg/");
+		
 		System.out.println("bookupload : path is =" + path);
 		System.out.println("bookupload : imgpath is =" + imgpath);
-		String fileName = book.getOriginalFilename();
-		String imgName = bookimg.getOriginalFilename();
-		System.out.println("bookupload : imgName is =" + imgName);
-		System.out.println("bookupload : fileName is =" + fileName);
+		System.out.println("bookupload : bookName is =" + book.getBookName());
+		System.out.println("bookupload : bookIntro is =" + book.getBookIntroduction());
+		System.out.println("bookupload : bookClassID is =" + book.getBookClassificationId());
+		System.out.println("bookupload : bookAuthor is =" + book.getBookAuthor());
+		
+		long bookSize = bookFile.getSize();
+		System.out.println("bookupload: bookSize is ==="+bookSize);
+		book.setBookSize((float)bookSize);
+
+		book.setUploadPerson("login person");
+		book.setUploadTime(new Date());
+		book.setBookState(1);
+		book.setBookDownloads(2533);
+		
+		String fileName =  FileUtils.getRandomFileName() + ".txt";
+		String imgName = FileUtils.getRandomFileName() + ".jpg";
+		
+		book.setBookLocation(fileName);
+		book.setBookCoverPath(imgName);
+		
+		System.out.println("bookupload: fileName is ==="+fileName);
+		System.out.println("bookupload: imgName is ==="+imgName);
+		
+		
 		try {
 			File dir = new File(path, fileName);
 			File imgdir = new File(imgpath, imgName);
@@ -71,8 +93,10 @@ public class BookController {
 				dir.mkdirs();
 				imgdir.mkdirs();
 			}
-			book.transferTo(dir);
-			bookimg.transferTo(imgdir);
+			bookFile.transferTo(dir);
+			bookimgFile.transferTo(imgdir);
+			
+			bookService.saveBook(book);//保存到数据库
 			return fileName+imgName;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -123,8 +147,8 @@ public class BookController {
 		
 		System.out.println("client ip is === "+IPUtils.getIpAddr(request));
 		
-		List<Books> booksList = new ArrayList<>();
-		String[] books = {"book001.txt","book002.txt","book003.txt","book004.txt","book005.txt","book006.txt","book007.txt","book008.txt"};
+		List<Books> booksList = bookService.getBooks();
+/*		String[] books = {"book001.txt","book002.txt","book003.txt","book004.txt","book005.txt","book006.txt","book007.txt","book008.txt"};
 		String[] bookNames = { "巴比伦尘封6000年的财富智慧", "余华-兄弟", "被毁灭的人", "斗破苍穹" , "大宋王侯" , "乱明" , "1855美国大亨" ,"中华国学300句"};
 		String[] bookImgs = { "a.jpg", "b.jpg", "c.jpg", "d.jpg" , "e.jpg", "f.jpg", "g.jpg", "h.jpg"};
 		String[] bookAuthors = { "Richest Man", "余华", "[美] 阿尔弗雷德·贝斯特   ", "天蚕土豆 " , "九孔 ", "喻心 ", "奶瓶战斗机 " ,"未知"};
@@ -148,7 +172,7 @@ public class BookController {
 			book.setBookIntroduction(bookIntros[i]);
 			book.setBookDownloads(bookDoanload[i]);
 			booksList.add(book);
-		}
+		}*/
 
 		return booksList;
 	}

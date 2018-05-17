@@ -1,5 +1,7 @@
 package com.yudong.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,11 @@ public class BookServiceImpl implements BookService{
 	public void findBookByName(String bookName) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Books> getBooks() {
+		return bookDao.getBooks();
 	}
 
 	

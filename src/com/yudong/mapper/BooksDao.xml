@@ -30,18 +30,22 @@
     where iBookId = #{bookId,jdbcType=INTEGER}
   </select>
   
+  <select id="getBooks" resultMap="BaseResultMap">
+  	select * from books order by iBookDownloads desc limit 7
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from books
     where iBookId = #{bookId,jdbcType=INTEGER}
   </delete>
   
   <insert id="insert" parameterType="com.yudong.entity.Books">
-    insert into books (iBookId, vBookName, iBookClassificationId, 
+    insert into books ( vBookName, iBookClassificationId, 
       vBookIntroduction, vBookAuthor, fBookSize, 
       dBookPrice, vBookCoverPath, vBookLocation, 
       vUploadPerson, dUploadTime, iBookState, 
       iBookDownloads)
-    values (#{bookId,jdbcType=INTEGER}, #{bookName,jdbcType=VARCHAR}, #{bookClassificationId,jdbcType=INTEGER}, 
+    values (#{bookName,jdbcType=VARCHAR}, #{bookClassificationId,jdbcType=INTEGER}, 
       #{bookIntroduction,jdbcType=VARCHAR}, #{bookAuthor,jdbcType=VARCHAR}, #{bookSize,jdbcType=REAL}, 
       #{bookPrice,jdbcType=DOUBLE}, #{bookCoverPath,jdbcType=VARCHAR}, #{bookLocation,jdbcType=VARCHAR}, 
       #{uploadPerson,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}, #{bookState,jdbcType=INTEGER}, 
