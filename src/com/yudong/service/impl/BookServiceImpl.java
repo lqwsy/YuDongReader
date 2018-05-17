@@ -24,20 +24,38 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public void findBookById(int bookId) {
-		// TODO Auto-generated method stub
-		
+	public Books findBookById(int bookId) {
+		return bookDao.getBookById(bookId);
 	}
 
 	@Override
-	public void findBookByName(String bookName) {
-		// TODO Auto-generated method stub
-		
+	public Books findBookByName(String bookName) {
+		return bookDao.getBookByName(bookName);
 	}
 
 	@Override
 	public List<Books> getBooks() {
 		return bookDao.getBooks();
+	}
+
+	@Override
+	public List<Books> getClassificationBooks(Integer bookClassificationId) {
+		return bookDao.getClassificationBooks(bookClassificationId);
+	}
+
+	@Override
+	public List<Books> getAllBooks() {
+		return bookDao.getAllBooks();
+	}
+
+	@Override
+	public List<Books> getBooksByAuthor(String author) {
+		return bookDao.getBooksByAuthor(author);
+	}
+
+	@Override
+	public int updateBookState(Books book) {
+		return bookDao.updateByPrimaryKeySelective(book);
 	}
 
 	

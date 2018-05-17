@@ -8,6 +8,7 @@ public interface UsersDao {
 	Users selectByUserName(String userName);
 	int insert(Users record);
 	int updatePasswordByUserName(Users user);
+	int updateByPrimaryKeySelective(Users record);
 	
 	
 	
@@ -17,7 +18,6 @@ public interface UsersDao {
 //    int insertSelective(Users record);
 //
 //
-//    int updateByPrimaryKeySelective(Users record);
 //
 //    int updateByPrimaryKey(Users record);
 

@@ -127,6 +127,7 @@
       </if>
     </trim>
   </insert>
+-->
   <update id="updateByPrimaryKeySelective" parameterType="com.yudong.entity.Users">
     update users
     <set>
@@ -172,5 +173,5 @@
       iUserState = #{userState,jdbcType=INTEGER},
       vSalt = #{salt,jdbcType=INTEGER},
     where iUserId = #{userId,jdbcType=VARCHAR}
-  </update> -->
+  </update> 
 </mapper>

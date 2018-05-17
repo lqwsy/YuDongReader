@@ -23,16 +23,30 @@
     iBookDownloads
   </sql>
   
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from books
-    where iBookId = #{bookId,jdbcType=INTEGER}
-  </select>
-  
   <select id="getBooks" resultMap="BaseResultMap">
   	select * from books order by iBookDownloads desc limit 7
   </select>
+  
+  <select id="getClassificationBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from books where iBookClassificationId = #{bookClassificationId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getBookById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from books where iBookId = #{bookId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getBookByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from books where vBookName = #{bookName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getAllBooks" resultMap="BaseResultMap">
+  	select * from books
+  </select>
+  
+  <select id="getBooksByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from books where vBookAuthor = #{author,jdbcType=VARCHAR}
+  </select>
+
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from books

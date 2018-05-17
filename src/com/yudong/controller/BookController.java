@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.yudong.entity.Books;
 import com.yudong.service.BookService;
-import com.yudong.utils.FileUtils;
+//import com.yudong.utils.FileUtils;
 import com.yudong.utils.IPUtils;
 
 /**
@@ -76,8 +76,11 @@ public class BookController {
 		book.setBookState(1);
 		book.setBookDownloads(2533);
 		
-		String fileName =  FileUtils.getRandomFileName() + ".txt";
-		String imgName = FileUtils.getRandomFileName() + ".jpg";
+		String fileName =  new SimpleDateFormat("YYmmss").format(new Date()) + ".txt";
+		String imgName = new SimpleDateFormat("YYmmss").format(new Date()) + ".jpg";
+//		
+//		String fileName =  FileUtils.getRandomFileName() + ".txt";
+//		String imgName = FileUtils.getRandomFileName() + ".jpg";
 		
 		book.setBookLocation(fileName);
 		book.setBookCoverPath(imgName);
