@@ -39,8 +39,8 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public List<Books> getClassificationBooks(Integer bookClassificationId) {
-		return bookDao.getClassificationBooks(bookClassificationId);
+	public List<Books> getClassificationBooks(Integer classificationId) {
+		return bookDao.getClassificationBooks(classificationId);
 	}
 
 	@Override
@@ -56,6 +56,11 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public int updateBookState(Books book) {
 		return bookDao.updateByPrimaryKeySelective(book);
+	}
+
+	@Override
+	public List<Books> searchBooks(String searchBookName) {
+		return bookDao.getBookBySearchName(searchBookName);
 	}
 
 	

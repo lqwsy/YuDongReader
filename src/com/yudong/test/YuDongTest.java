@@ -62,6 +62,7 @@ public class YuDongTest {
 		
 	}
 	
+	//测试获取今日排行图书
 	@Test
 	public void testGetBooks(){
 		List<Books> books = bookService.getBooks();
@@ -69,5 +70,27 @@ public class YuDongTest {
 			System.out.println(books.get(i).getBookName()+"==="+books.get(i).getBookDownloads());
 		}
 	}
+	
+	
+	//测试获取今日排行图书
+	@Test
+	public void testGetClassificationBooks(){
+		List<Books> books = bookService.getClassificationBooks(2);
+		for(int i=0;i<books.size();i++){
+			System.out.println(books.get(i).getBookName()+"==分类="+books.get(i).getBookClassificationId());
+		}
+	}
+	
+	
+	//测试获取今日排行图书
+	@Test
+	public void testSearchBooks(){
+		List<Books> books = bookService.searchBooks("大");
+		for(int i=0;i<books.size();i++){
+			System.out.println(books.get(i).getBookName()+"===");
+		}
+	}
+	
+	
 
 }

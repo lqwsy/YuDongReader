@@ -12,7 +12,9 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +44,7 @@ public class BookController {
 
 	@Autowired
 	private BookService bookService;
+	private Map<String,Integer> classificationMap = new HashMap<>();
 
 	/**
 	 * 跳转到图书上传页面
@@ -60,13 +63,6 @@ public class BookController {
 		String path = request.getSession().getServletContext().getRealPath("static/books/");
 		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg/");
 		
-		System.out.println("bookupload : path is =" + path);
-		System.out.println("bookupload : imgpath is =" + imgpath);
-		System.out.println("bookupload : bookName is =" + book.getBookName());
-		System.out.println("bookupload : bookIntro is =" + book.getBookIntroduction());
-		System.out.println("bookupload : bookClassID is =" + book.getBookClassificationId());
-		System.out.println("bookupload : bookAuthor is =" + book.getBookAuthor());
-		
 		long bookSize = bookFile.getSize();
 		System.out.println("bookupload: bookSize is ==="+bookSize);
 		book.setBookSize((float)bookSize);
@@ -78,9 +74,6 @@ public class BookController {
 		
 		String fileName =  new SimpleDateFormat("YYmmss").format(new Date()) + ".txt";
 		String imgName = new SimpleDateFormat("YYmmss").format(new Date()) + ".jpg";
-//		
-//		String fileName =  FileUtils.getRandomFileName() + ".txt";
-//		String imgName = FileUtils.getRandomFileName() + ".jpg";
 		
 		book.setBookLocation(fileName);
 		book.setBookCoverPath(imgName);
@@ -181,6 +174,37 @@ public class BookController {
 	}
 	
 	/**
+	 * 获取分类图书
+	 * 
+	 * @return 返回图书列表
+	 */
+	@RequestMapping(value = "/getClassificationBooks", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public List<Books> getClassificationBooksController(HttpServletRequest request,HttpSession session) {
+		System.out.println("client ip is === "+IPUtils.getIpAddr(request));
+		String classificationName = request.getParameter("classificationName");
+		initClassificationMap();
+		List<Books> booksList = bookService.getClassificationBooks(classificationMap.get(classificationName));
+		System.out.println("获取的 "+classificationMap.get(classificationName)+" 分类图书个数"+booksList.size());
+		return booksList;
+	}
+	
+	
+	/**
+	 * 获取根据图书名模糊搜索的图书
+	 * 
+	 * @return 返回图书列表
+	 */
+	@RequestMapping(value = "/getSearchBooks", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public List<Books> getSearchBooksController(HttpServletRequest request,HttpSession session) {
+		System.out.println("client ip is === "+IPUtils.getIpAddr(request));
+		String searchBookName = request.getParameter("searchBookName");
+		List<Books> booksList = bookService.searchBooks(searchBookName);
+		return booksList;
+	}
+	
+	/**
 	 * 图片上传
 	 * @param 
 	 * @return 跳转到登录页面
@@ -211,6 +235,21 @@ public class BookController {
             e.printStackTrace();
             return "error";  
         }
+	}
+	
+	
+	/**
+	 * 初始化分类表
+	 * */
+	private void initClassificationMap(){
+		classificationMap.clear();
+		classificationMap.put("小说", 1);
+		classificationMap.put("文学", 2);
+		classificationMap.put("传记", 3);
+		classificationMap.put("历史", 4);
+		classificationMap.put("经济", 5);
+		classificationMap.put("管理", 6);
+		classificationMap.put("励志", 7);
 	}
 
 }
