@@ -95,7 +95,7 @@ public class UserController {
 			user.setUserName(userName);
 			user.setSalt(JavaMD5Util.generatorSalt());//生成盐值
 			user.setPassword(JavaMD5Util.encode(password, user.getSalt()));//密码加密加盐
-			user.setRole(2);
+			user.setRole(2);//1：超级管理员，2：普通用户
 			user.setHeadImage("default.jpg");
 			user.setRegisteTime(new Date());
 			user.setUserState(1);
@@ -135,6 +135,16 @@ public class UserController {
 		return "login";
 	}
 	
+	/**
+	 * 用户登录 用户从首页点击登录，跳转到登录页面
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/adminLogin", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToAdminLogin() {
+		return "admin/admin_login";
+	}
+	
 	
 	/**
 	 * 网页端登录控制
@@ -147,16 +157,24 @@ public class UserController {
 	public String webLoginController(HttpSession session, Users user, Model model) {
 		System.out.println(user.getUserName());
 		System.out.println(user.getPassword());
-		
+		int role = user.getRole();
 		Users curUser = userService.findUserByUserNameAndPsw(user);
 		if(curUser!=null){
 			session.setAttribute(Constants.USER_KEY,curUser);
 			System.out.println("login success");
-			return "index";
+			if(role == 1){
+				return "admin/admin_usermanage";
+			}else{
+				return "index";
+			}
 		}else{
 			model.addAttribute(Constants.LOGIN_RESULT, "用户名密码错误");
 			System.out.println("login error");
-			return "login";
+			if(role == 1){
+				return "redirect:admin/admin_login";
+			}else{
+				return "login";
+			}
 		}
 	
 	}
@@ -198,13 +216,18 @@ public class UserController {
 				curUser.setUserName(user.getUserName());
 				curUser.setSalt(JavaMD5Util.generatorSalt());//生成盐值
 				curUser.setPassword(JavaMD5Util.encode(user.getPassword(), curUser.getSalt()));//密码加密加盐
-				curUser.setRole(2);
+				curUser.setRole(user.getRole());//
 				curUser.setHeadImage("default.jpg");
 				curUser.setRegisteTime(new Date());
 				curUser.setUserState(1);
 				userService.addUser(curUser);//保存用户注册信息
 				session.setAttribute(Constants.USER_KEY,curUser);//保存登录信息
-				return "index";
+				
+				if(user.getRole()==1){
+					return "admin_login";
+				}else{
+					return "login";
+				}
 			}else{
 				return "register";
 			}

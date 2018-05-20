@@ -8,6 +8,7 @@
 </head>
 <body>
 	<form id="loginForm" action="${pageContext.request.contextPath}/webLoginController" method="post">
+		<input type="hidden" name="role" id="role" value="2"/>
 		用户名：<input type="text" name="userName" class="username"/>
 		<br/>
 		密码：<input type="password" name="password" class="password"/>

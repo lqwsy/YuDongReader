@@ -1,0 +1,21 @@
+#login{
+	margin:0 auto;
+	margin-top: 200px;
+	width:300px;
+	height:500px;
+}
+.form-group input,button{
+	width:300px;
+}
+#login_result{
+	color:red;
+}
+.logo-img{
+	width:300px;
+}
+.form-regist{
+	float:left;
+}
+.form-forgetPsw{
+	float:right;
+}

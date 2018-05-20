@@ -192,7 +192,6 @@ public class BookController {
 	
 	/**
 	 * 获取根据图书名模糊搜索的图书
-	 * 
 	 * @return 返回图书列表
 	 */
 	@RequestMapping(value = "/getSearchBooks", method = { RequestMethod.GET, RequestMethod.POST })

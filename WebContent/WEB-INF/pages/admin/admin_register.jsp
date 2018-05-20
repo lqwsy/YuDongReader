@@ -8,7 +8,7 @@
 </head>
 <body>
 	<form id="RegisterForm" action="${pageContext.request.contextPath}/webRegisterController" method="post">
-		<input type="hidden" name="role" id="role" value="2"/>
+		<input type="hidden" name="role" id="role" value="1"/>
 		手机号：<input type="text" id="userName" name="userName" class="username"/>
 		<br/>
 		密码：<input type="password" name="password" class="password"/>
