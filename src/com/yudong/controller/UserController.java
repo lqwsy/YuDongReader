@@ -126,7 +126,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 用户登录 用户从首页点击登录，跳转到登录页面
+	 * 用户登录 
 	 * @param 
 	 * @return 跳转到登录页面
 	 */
@@ -136,7 +136,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 用户登录 用户从首页点击登录，跳转到登录页面
+	 * 超级管理员登录
 	 * @param 
 	 * @return 跳转到登录页面
 	 */
@@ -145,6 +145,90 @@ public class UserController {
 		return "admin/admin_login";
 	}
 	
+	/**
+	 * 超级管理员登录
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/adminUserManager", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToAdminUserManager() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "admin/admin_usermanage";
+	}
+	
+	
+	/**
+	 * 超级管理员登录
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToAdminBookManager() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "admin/admin_bookmanage";
+	}
+	
+	/**
+	 * 我的图书
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/myBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToMyBook() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "book_my";
+	}
+	
+	/**
+	 * 我的图书
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/uploadBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToUploadBook() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "book_upload";
+	}
 	
 	/**
 	 * 网页端登录控制
@@ -165,11 +249,9 @@ public class UserController {
 			if(role == 1){
 				return "admin/admin_usermanage";
 			}else{
-				return "index";
+				return "redirect:/myBook";
 			}
 		}else{
-			model.addAttribute(Constants.LOGIN_RESULT, "用户名密码错误");
-			System.out.println("login error");
 			if(role == 1){
 				return "redirect:admin/admin_login";
 			}else{

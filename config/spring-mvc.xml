@@ -30,7 +30,7 @@
 	<mvc:resources location="/static/" mapping="/static/**" />
 
 	<!-- 配置根视图 -->
-	<mvc:view-controller path="/" view-name="index" />
+	<mvc:view-controller path="/" view-name="login" />
 
 	<!-- 默认的视图解析器- -->
 	<bean id="defaultViewResolver"
