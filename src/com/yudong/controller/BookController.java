@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yudong.entity.Books;
+import com.yudong.entity.Users;
 import com.yudong.service.BookService;
 //import com.yudong.utils.FileUtils;
 import com.yudong.utils.IPUtils;
@@ -58,24 +58,64 @@ public class BookController {
 	/**
 	 * 我的图书
 	 * @param 
-	 * @return 跳转到登录页面
+	 * @return 跳转到我的图书页面
 	 */
 	@RequestMapping(value = "/myBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBook() {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	public String goToMyBook(HttpSession session,Model model) {
+		Users cur_user = (Users) session.getAttribute("cur_user");
+		if(cur_user!=null){
+			System.out.println("cur_user not null");
+			List<Books> mybooks = bookService.getMyBooks(cur_user.getUserName());
+			System.out.println("mybooks count is : "+mybooks.size());
+			session.setAttribute("cur_user_books", mybooks);
+			return "book_my";
+		}
 		return "book_my";
+	}
+	
+	/**
+	 * 图书详细信息页面
+	 * @param 
+	 * @return 跳转到图书信息页面
+	 */
+	@RequestMapping(value = "/bookDetail", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToUserDetail() {
+		
+		
+		
+		
+		
+		return "admin/book_detail";
+	}
+	
+	/**
+	 * 图书信息页面
+	 * @param 
+	 * @return 跳转到图书信息页面
+	 */
+	@RequestMapping(value = "/myBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToMyBookInfo(HttpSession session,Model model,int bookId) {
+		if(bookId!=0){
+			
+			
+			
+			
+			return "book_info";
+		}
+		return "book_info";
+	}
+	
+	/**
+	 * 上传图书页面
+	 * @param 
+	 * @return 跳转到上传图书页面
+	 */
+	@RequestMapping(value = "/uploadBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToUploadBook() {
+		
+
+		
+		return "book_upload";
 	}
 
 	/**

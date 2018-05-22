@@ -33,10 +33,11 @@
 						src="static/img/user01.png"></span>
 			</a>
 				<ul class="am-dropdown-content">
-					<li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
-					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-					<li><a href="#"><span class="am-icon-power-off"></span> 退出</a>
-					</li>
+					<!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
+					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
+					<li><a
+						href="${pageContext.request.contextPath}/webLogout?type=1"><span
+							class="am-icon-power-off"></span> 退出</a></li>
 				</ul></li>
 			<li><a href="#" class="tpl-header-list-link"><span
 					class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
@@ -48,10 +49,9 @@
 			<div class="tpl-left-nav-title">功能列表</div>
 			<div class="tpl-left-nav-list">
 				<ul class="tpl-left-nav-menu">
-					<li class="tpl-left-nav-item">
-						<a href="" class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
-						</a>
-					</li>
+					<li class="tpl-left-nav-item"><a href=""
+						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
+					</a></li>
 					<li class="tpl-left-nav-item">
 						<!-- 打开状态 a 标签添加 active 即可   --> <a href="javascript:;"
 						class="nav-link tpl-left-nav-link-list active"> <i
@@ -61,13 +61,12 @@
 					</a>
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
-								<!-- 打开状态 a 标签添加 active 即可   --> 
-								<a href="${pageContext.request.contextPath}/adminUserManager">
+								<!-- 打开状态 a 标签添加 active 即可   --> <a
+								href="${pageContext.request.contextPath}/adminUserManager">
 									<i class="am-icon-angle-right"></i> <span>用户管理</span>
-								</a> 
-								<a href="${pageContext.request.contextPath}/adminBookManager"
-									class="active"> <i class="am-icon-angle-right"></i> <span>图书管理</span>
-								</a>
+							</a> <a href="${pageContext.request.contextPath}/adminBookManager"
+								class="active"> <i class="am-icon-angle-right"></i> <span>图书管理</span>
+							</a>
 							</li>
 						</ul>
 					</li>
@@ -93,13 +92,13 @@
 							<div class="am-form-group">
 								<select data-am-selected="{btnSize: &#39;sm&#39;}"
 									style="display: none;">
-									<option value="option1">所有类别</option>
-									<option value="option2">IT业界</option>
-									<option value="option3">数码产品</option>
-									<option value="option3">笔记本电脑</option>
-									<option value="option3">平板电脑</option>
-									<option value="option3">只能手机</option>
-									<option value="option3">超极本</option>
+									<option value="option1">小说</option>
+									<option value="option2">文学</option>
+									<option value="option3">传记</option>
+									<option value="option3">历史</option>
+									<option value="option3">经济</option>
+									<option value="option3">管理</option>
+									<option value="option3">励志</option>
 								</select>
 							</div>
 						</div>
@@ -147,11 +146,11 @@
 												<div class="am-btn-toolbar">
 													<div class="am-btn-group am-btn-group-xs">
 														<button
-															class="am-btn am-btn-default am-btn-xs am-text-secondary">
+															class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToBookDetail()">
 															<span class="am-icon-pencil-square-o"></span> 审核
 														</button>
 														<button
-															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
+															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="deleteBook()">
 															<span class="am-icon-trash-o"></span> 删除
 														</button>
 													</div>
@@ -167,8 +166,6 @@
 											<li class="am-active"><a href="#">1</a></li>
 											<li><a href="#">2</a></li>
 											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
 											<li><a href="#">»</a></li>
 										</ul>
 									</div>
@@ -183,6 +180,16 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function turnToBookDetail() {
+			window.location.href = "/YuDongReader/bookDetail";
+			window.event.returnValue = false;//这个属性放到提交表单中的onclick事件中在这次点击事件不会提交表单，如果放到超链接中则在这次点击事件不执行超链接href属性
+		}
+
+		function deleteBook() {
+			alert("deleteBook");
+		}
+	</script>
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>

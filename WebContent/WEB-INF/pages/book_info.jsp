@@ -109,7 +109,7 @@
 						<a class="tooltips" href="#"><span>设置</span><i class="lnr lnr-cog"></i></a>
 					</li> -->
 					<li>
-						<a class="tooltips" href="${pageContext.request.contextPath}/webLogout"><span>退出</span><i class="lnr lnr-power-switch"></i></a>
+						<a class="tooltips" href="${pageContext.request.contextPath}/webLogout?type=2"><span>退出</span><i class="lnr lnr-power-switch"></i></a>
 					</li>
 				</ul>
 			</div>

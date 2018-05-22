@@ -11,6 +11,7 @@ public interface BookService {
 	public List<Books> getClassificationBooks(Integer classificationId);//根据图书分类名称获取图书
 	public List<Books> getAllBooks();
 	public List<Books> getBooksByAuthor(String author);
+	public List<Books> getMyBooks(String uploadPerson);
 	public int updateBookState(Books book);
 	public Books findBookById(int bookId);//根据ID查找图书
 	public Books findBookByName(String bookName);//根据图书名称来查找图书

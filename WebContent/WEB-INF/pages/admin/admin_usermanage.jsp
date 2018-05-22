@@ -14,8 +14,8 @@
 <body data-type="generalComponents">
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"> <img src="static/img/weblogo.png"
-			alt="">
+		<a href="javascript:;" class="tpl-logo"> <img
+			src="static/img/weblogo.png" alt="">
 		</a>
 	</div>
 	<!-- <button
@@ -24,23 +24,24 @@
 		<span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span>
 	</button> -->
 	<div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-		<ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-			<li class="am-dropdown" data-am-dropdown="" data-am-dropdown-toggle="">
-				<a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-					<span class="tpl-header-list-user-nick">超级管理员</span>
-					<span class="tpl-header-list-user-ico"> <img src="static/img/user01.png"></span>
-				</a>
+		<ul
+			class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+			<li class="am-dropdown" data-am-dropdown=""
+				data-am-dropdown-toggle=""><a
+				class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+					<span class="tpl-header-list-user-nick">超级管理员</span> <span
+					class="tpl-header-list-user-ico"> <img
+						src="static/img/user01.png"></span>
+			</a>
 				<ul class="am-dropdown-content">
-					<li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
-					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-					<li><a href="${pageContext.request.contextPath}/adminLogin"><span class="am-icon-power-off"></span> 退出</a>
-					</li>
+					<li><a
+						href="${pageContext.request.contextPath}/webLogout?type=1"><span
+							class="am-icon-power-off"></span> 退出</a></li>
 				</ul></li>
-			<li>
-				<a href="${pageContext.request.contextPath}/adminLogin" class="tpl-header-list-link">
-					<span class="am-icon-sign-out tpl-header-list-ico-out-size"></span>
-				</a>
-			</li>
+			<li><a href="${pageContext.request.contextPath}/adminLogin"
+				class="tpl-header-list-link"> <span
+					class="am-icon-sign-out tpl-header-list-ico-out-size"></span>
+			</a></li>
 		</ul>
 	</div>
 	</header>
@@ -138,33 +139,11 @@
 												<div class="am-btn-toolbar">
 													<div class="am-btn-group am-btn-group-xs">
 														<button
-															class="am-btn am-btn-default am-btn-xs am-text-secondary">
+															class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToUserDetail()">
 															<span class="am-icon-pencil-square-o"></span> 查看
 														</button>
 														<button
-															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-															<span class="am-icon-trash-o"></span> 删除
-														</button>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>1</td>
-											<td><a href="#">14571412354</a></td>
-											<td>root</td>
-											<td>超级管理员</td>
-											<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-											<td>
-												<div class="am-btn-toolbar">
-													<div class="am-btn-group am-btn-group-xs">
-														<button
-															class="am-btn am-btn-default am-btn-xs am-text-secondary">
-															<span class="am-icon-pencil-square-o"></span> 查看
-														</button>
-														<button
-															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
+															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="deleteUser()">
 															<span class="am-icon-trash-o"></span> 删除
 														</button>
 													</div>
@@ -180,8 +159,6 @@
 											<li class="am-active"><a href="#">1</a></li>
 											<li><a href="#">2</a></li>
 											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
 											<li><a href="#">»</a></li>
 										</ul>
 									</div>
@@ -196,6 +173,16 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function turnToUserDetail() {
+			window.location.href = "/YuDongReader/userDetail";
+			window.event.returnValue = false;
+		}
+
+		function deleteUser() {
+			alert("deleteUser");
+		}
+	</script>
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>

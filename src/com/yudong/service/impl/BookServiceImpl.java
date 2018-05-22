@@ -63,6 +63,11 @@ public class BookServiceImpl implements BookService{
 		return bookDao.getBookBySearchName(searchBookName);
 	}
 
+	@Override
+	public List<Books> getMyBooks(String uploadPerson) {
+		return bookDao.getBooksByUploadPerson(uploadPerson);
+	}
+
 	
 
 }

@@ -50,6 +50,10 @@
   <select id="getBooksByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select * from books where vBookAuthor = #{author,jdbcType=VARCHAR}
   </select>
+  
+    <select id="getBooksByUploadPerson" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from books where vUploadPerson = #{uploadPerson,jdbcType=VARCHAR}
+  </select>
 
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

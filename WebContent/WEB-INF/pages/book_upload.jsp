@@ -3,34 +3,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html style="overflow: hidden;">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>图书上传</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="keywords" content="">
-<script type="application/x-javascript">
-	
-	
-	
-		addEventListener("load", function() {
-			setTimeout(hideURLbar, 0);
-		}, false);
-	
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	
-
-
-</script>
-<link href="static/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
-<link href="static/css/style.css" rel="stylesheet" type="text/css">
-<link href="static/css/font-awesome.css" rel="stylesheet">
-<link rel="stylesheet" href="static/css/icon-font.min.css"
-	type="text/css">
-<script src="static/js/jquery-1.10.2.min.js"></script>
-<script src="static/js/css3clock.js"></script>
-<script src="static/js/skycons.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>图书上传</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<script type="application/x-javascript">
+			addEventListener("load", function() {
+				setTimeout(hideURLbar, 0);
+			}, false);
+		
+			function hideURLbar() {
+				window.scrollTo(0, 1);
+			}
+	</script>
+	<link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="static/css/style.css" rel="stylesheet" type="text/css">
+	<link href="static/css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" href="static/css/icon-font.min.css" type="text/css">
+	<script src="static/js/jquery-1.10.2.min.js"></script>
+	<script src="static/js/css3clock.js"></script>
+	<script src="static/js/skycons.js"></script>
 </head>
 <body style="">
 	<div class="page-container">
@@ -48,7 +40,7 @@
 				<div class="outter-wp">
 					<div class="sub-heard-part">
 						<ol class="breadcrumb m-b-0">
-							<li><a href="#">首页</a></li>
+							<li><a href="${pageContext.request.contextPath}/myBook">首页</a></li>
 							<li class="active">图书上传</li>
 						</ol>
 					</div>
@@ -56,8 +48,7 @@
 						<h2 class="inner-tittle">填写图书信息</h2>
 						<div class="graph-form">
 							<div class="form-body">
-								<form id="bookUploadForm"
-									action="${pageContext.request.contextPath }/bookUploadController"
+								<form id="bookUploadForm" action="${pageContext.request.contextPath }/bookUploadController"
 									method="post" enctype="multipart/form-data">
 									<div class="form-group">
 										<label for="bookName">图书名称</label> <input type="text"
@@ -108,16 +99,16 @@
 				</div>
 			</div>
 			<footer>
-			<p>Copyright © 2016.Company name All rights reserved.More
-				Templates.</p>
+			<p>Copyright © 2014-2018.YUDONG Inc. All rights reserved.</p>
 			</footer>
 		</div>
 	</div>
 	<div class="sidebar-menu">
-		<header class="logo"> <a href="#"> <span id="logo">
-				<h1>鱼洞阅读</h1>
-		</span>
-		</a> </header>
+		<header class="logo"> 
+			<a href="#"> 
+				<span id="logo"><h1>鱼洞阅读</h1></span>
+			</a> 
+		</header>
 		<div style="border-top: 1px solid rgba(69, 74, 84, 0.7)"></div>
 		<div class="down">
 			<a href="#"><img src="static/images/admin.jpg"></a> <a href="#"><span
@@ -127,13 +118,8 @@
 				<li><a class="tooltips" href="#"> <span>个人信息</span><i
 						class="lnr lnr-user"></i>
 				</a></li>
-				<!-- <li>
-					<a class="tooltips" href="#">
-						<span>设置</span><i class="lnr lnr-cog"></i>
-					</a>
-				</li> -->
 				<li><a class="tooltips"
-					href="${pageContext.request.contextPath}/webLogout"> <span>退出</span><i
+					href="${pageContext.request.contextPath}/webLogout?type=2"> <span>退出</span><i
 						class="lnr lnr-power-switch"></i>
 				</a></li>
 			</ul>

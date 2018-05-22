@@ -1,8 +1,6 @@
 package com.yudong.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yudong.common.Constants;
-import com.yudong.entity.Books;
 import com.yudong.entity.Users;
 import com.yudong.service.UserService;
 import com.yudong.utils.JavaMD5Util;
@@ -146,18 +143,13 @@ public class UserController {
 	}
 	
 	/**
-	 * 超级管理员登录
+	 * 后台用户管理
 	 * @param 
-	 * @return 跳转到登录页面
+	 * @return 跳转到用户管理页面
 	 */
 	@RequestMapping(value = "/adminUserManager", method = { RequestMethod.GET, RequestMethod.POST })
 	public String goToAdminUserManager() {
-		
-		
-		
-		
-		
-		
+		//获取所有用户
 		
 		
 		
@@ -166,18 +158,13 @@ public class UserController {
 	
 	
 	/**
-	 * 超级管理员登录
+	 * 后台图书管理
 	 * @param 
-	 * @return 跳转到登录页面
+	 * @return 跳转到图书管理页面
 	 */
 	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
 	public String goToAdminBookManager() {
-		
-		
-		
-		
-		
-		
+		//获取所有图书
 		
 		
 		
@@ -195,16 +182,7 @@ public class UserController {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return "user_detail";
+		return "admin/user_detail";
 	}
 	
 	/**
@@ -219,62 +197,11 @@ public class UserController {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
 		return "my_info";
 	}
 	
-	/**
-	 * 图书信息页面
-	 * @param 
-	 * @return 跳转到图书信息页面
-	 */
-	@RequestMapping(value = "/myBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBookInfo() {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return "book_info";
-	}
+
 	
-	/**
-	 * 我的图书
-	 * @param 
-	 * @return 跳转到登录页面
-	 */
-	@RequestMapping(value = "/uploadBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToUploadBook() {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return "book_upload";
-	}
 	
 	/**
 	 * 网页端登录控制
@@ -285,22 +212,19 @@ public class UserController {
 	 * */
 	@RequestMapping(value = "/webLoginController", method = { RequestMethod.POST })
 	public String webLoginController(HttpSession session, Users user, Model model) {
-		System.out.println(user.getUserName());
-		System.out.println(user.getPassword());
-		int role = user.getRole();
+		int role = user.getRole();//是管理员登陆还是普通用户登录，1：超管，2：普通用户
 		Users curUser = userService.findUserByUserNameAndPsw(user);
 		if(curUser!=null){
-			session.setAttribute("cur_user",curUser);
-			System.out.println("login success");
+			session.setAttribute("cur_user",curUser);//保存用户到session中，
 			if(role == 1){
-				return "admin/admin_usermanage";
+				return "redirect:/adminUserManager";
 			}else{
 				return "redirect:/myBook";
 			}
 		}else{
 			if(role == 1){
 				model.addAttribute("login_result", "用户名密码错误");
-				return "redirect:admin/admin_login";
+				return "admin/admin_login";
 			}else{
 				model.addAttribute("login_result", "用户名密码错误");
 				return "login";
@@ -315,9 +239,14 @@ public class UserController {
 	 *  @return 跳转到登录
 	 * */
 	@RequestMapping(value = "/webLogout", method = {RequestMethod.GET, RequestMethod.POST })
-	public String webLogoutController(HttpSession session,Model model) {
+	public String webLogoutController(HttpSession session,String type,Model model) {
 		session.removeAttribute("cur_user");
-		return "login";
+		session.removeAttribute("cur_user_books");
+		if(type.equals("1")){
+			return "admin_login";
+		}else{
+			return "login";
+		}
 	}
 	
 	/**

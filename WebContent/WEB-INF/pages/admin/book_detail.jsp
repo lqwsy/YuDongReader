@@ -33,9 +33,7 @@
 					class="tpl-header-list-user-ico"> <img src="static/img/user01.png"></span>
 			</a>
 				<ul class="am-dropdown-content">
-					<li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
-					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-					<li><a href="#"><span class="am-icon-power-off"></span> 退出</a>
+					<li><a href="${pageContext.request.contextPath}/webLogout?type=1"><span class="am-icon-power-off"></span> 退出</a>
 					</li>
 				</ul></li>
 			<li><a href="#" class="tpl-header-list-link"><span
@@ -48,7 +46,7 @@
 			<div class="tpl-left-nav-title">功能列表</div>
 			<div class="tpl-left-nav-list">
 				<ul class="tpl-left-nav-menu">
-					<li class="tpl-left-nav-item"><a href="index.html"
+					<li class="tpl-left-nav-item"><a href="#"
 						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
 					</a></li>
 					<li class="tpl-left-nav-item">

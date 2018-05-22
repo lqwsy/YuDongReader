@@ -54,7 +54,7 @@
 		</div>
 	</div>
 	<div class="footer">
-		<p>Copyright &copy; 2016.Company name All rights reserved.More Templates.</p>
+		<p>Copyright © 2014-2018.YUDONG Inc. All rights reserved.</p>
 	</div>
 	<script src="static/js/jquery.nicescroll.js"></script>
 	<script src="static/js/scripts.js"></script>

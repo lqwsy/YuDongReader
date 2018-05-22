@@ -33,6 +33,7 @@
 							<p><button type="submit" class="am-btn am-btn-default">登录</button></p>
 						</fieldset>
 					</form>
+					<label id="login_result">${login_result}</label>
 				</div>
 			</div>
 		</div>
