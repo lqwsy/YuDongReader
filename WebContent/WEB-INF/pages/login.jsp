@@ -6,7 +6,6 @@
 		<title>鱼洞阅读登录</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="keywords" content="" />
 		<script type="application/x-javascript">
 			addEventListener("load", function() {
 				setTimeout(hideURLbar, 0);
@@ -32,8 +31,12 @@
 						<input type="hidden" name="role" id="role" value="2"/>
 						<input type="text" name="userName" id="userName" class="text" placeholder="账号">
 						<input type="password" name="password" id="password" placeholder="密码">
-						<div class="submit"><input type="submit" onclick="myFunction()" value="登录"></div>
-						<div class="clearfix"></div>
+						<div class="submit">
+							<input type="submit" onclick="myFunction()" value="登录">
+						</div>
+						<!-- <div class="clearfix">
+							
+						</div> -->
 						<div class="new">
 							<p><label class="checkbox11"><input type="checkbox" name="checkbox"><i> </i>忘记密码 ?</label></p>
 							<p class="sign">还没有账号 ?
@@ -42,6 +45,7 @@
 							<div class="clearfix"></div>
 						</div>
 					</form>
+					<label id="login_result">${login_result}</label>
 				</div>
 			</div>
 		</div>
@@ -49,7 +53,8 @@
 			<p>Copyright &copy; 2016.Company name All rights reserved.More Templates. </p>
 		</div>
 		<script src="static/js/jquery.nicescroll.js"></script>
-		<script src="static/js/scripts.js"></script>
 		<script src="static/js/bootstrap.min.js"></script>
+		<script src="static/js/scripts.js"></script>
+		<script src="static/js/login.js"></script>
 	</body>
 </html>

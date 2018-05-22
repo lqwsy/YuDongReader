@@ -49,6 +49,7 @@
 						<div class="clearfix"></div>
 					</div>
 				</form>
+				<span id="register_result">${register_result}</span>
 			</div>
 		</div>
 	</div>

@@ -183,14 +183,37 @@ public class UserController {
 		
 		return "admin/admin_bookmanage";
 	}
+
+	/**
+	 * 用户详细信息页面
+	 * @param 
+	 * @return 跳转到个人信息页面
+	 */
+	@RequestMapping(value = "/userDetail", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToUserDetail() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "user_detail";
+	}
 	
 	/**
-	 * 我的图书
+	 * 个人信息页面
 	 * @param 
-	 * @return 跳转到登录页面
+	 * @return 跳转到个人信息页面
 	 */
-	@RequestMapping(value = "/myBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBook() {
+	@RequestMapping(value = "/myProfile", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToMyProfile() {
 		
 		
 		
@@ -204,7 +227,30 @@ public class UserController {
 		
 		
 		
-		return "book_my";
+		return "my_info";
+	}
+	
+	/**
+	 * 图书信息页面
+	 * @param 
+	 * @return 跳转到图书信息页面
+	 */
+	@RequestMapping(value = "/myBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToMyBookInfo() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "book_info";
 	}
 	
 	/**
@@ -244,7 +290,7 @@ public class UserController {
 		int role = user.getRole();
 		Users curUser = userService.findUserByUserNameAndPsw(user);
 		if(curUser!=null){
-			session.setAttribute(Constants.USER_KEY,curUser);
+			session.setAttribute("cur_user",curUser);
 			System.out.println("login success");
 			if(role == 1){
 				return "admin/admin_usermanage";
@@ -253,12 +299,25 @@ public class UserController {
 			}
 		}else{
 			if(role == 1){
+				model.addAttribute("login_result", "用户名密码错误");
 				return "redirect:admin/admin_login";
 			}else{
+				model.addAttribute("login_result", "用户名密码错误");
 				return "login";
 			}
 		}
 	
+	}
+	
+	/**
+	 * 网页端退出控制
+	 *  @param session 保存登录数据 
+	 *  @return 跳转到登录
+	 * */
+	@RequestMapping(value = "/webLogout", method = {RequestMethod.GET, RequestMethod.POST })
+	public String webLogoutController(HttpSession session,Model model) {
+		session.removeAttribute("cur_user");
+		return "login";
 	}
 	
 	/**
@@ -286,7 +345,7 @@ public class UserController {
 		
 		Users curUser = userService.findUserByUserName(user.getUserName());
 		if(curUser!=null){//用户存在不能注册
-			model.addAttribute(Constants.REGISTER_RESULT, "用户已存在");
+			model.addAttribute("register_result", "用户已存在");
 			System.out.println("register error");
 			return "register";
 		}else{
@@ -298,19 +357,17 @@ public class UserController {
 				curUser.setUserName(user.getUserName());
 				curUser.setSalt(JavaMD5Util.generatorSalt());//生成盐值
 				curUser.setPassword(JavaMD5Util.encode(user.getPassword(), curUser.getSalt()));//密码加密加盐
-				curUser.setRole(user.getRole());//
+				curUser.setRole(2);//普通用户注册
 				curUser.setHeadImage("default.jpg");
 				curUser.setRegisteTime(new Date());
 				curUser.setUserState(1);
 				userService.addUser(curUser);//保存用户注册信息
-				session.setAttribute(Constants.USER_KEY,curUser);//保存登录信息
 				
-				if(user.getRole()==1){
-					return "admin_login";
-				}else{
-					return "login";
-				}
+				model.addAttribute("login_result", "注册成功，请重新登录");
+				return "login";
 			}else{
+				model.addAttribute("register_result", "注册失败");
+				System.out.println("register error");
 				return "register";
 			}
 		}

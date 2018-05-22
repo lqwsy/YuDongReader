@@ -59,6 +59,7 @@
 												<th>图书名称</th>
 												<th>图书作者</th>
 												<th>上传时间</th>
+												<th>状态</th>
 												<th>操作</th>
 											</tr>
 										</thead>
@@ -68,8 +69,9 @@
 												<td>斗破苍穹</td>
 												<td>天产土豆</td>
 												<td>2018年4月23号 23:15:02</td>
+												<td>已审核</td>
 												<td>
-													<a href="#">编辑</a> |
+													<a href="${pageContext.request.contextPath}/myBookInfo">编辑</a> |
 													<a href="#">删除</a>
 												</td>
 											</tr>
@@ -78,8 +80,9 @@
 												<td>斗破苍穹</td>
 												<td>天产土豆</td>
 												<td>2018年4月23号 23:15:02</td>
+												<td>未审核</td>
 												<td>
-													<a href="#">编辑</a> |
+													<a href="${pageContext.request.contextPath}/myBookInfo">编辑</a> |
 													<a href="#">删除</a>
 												</td>
 											</tr>
@@ -88,8 +91,9 @@
 												<td>斗破苍穹</td>
 												<td>天产土豆</td>
 												<td>2018年4月23号 23:15:02</td>
+												<td>已审核</td>
 												<td>
-													<a href="#">编辑</a> |
+													<a href="${pageContext.request.contextPath}/myBookInfo">编辑</a> |
 													<a href="#">删除</a>
 												</td>
 											</tr>
@@ -111,18 +115,18 @@
 				</header>
 				<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
 				<div class="down">
-					<a href="#"><img src="images/admin.jpg"></a>
-					<a href="#"><span class=" name-caret">这是你的用户名</span></a>
+					<a href="${pageContext.request.contextPath}/myProfile"><img src="static/images/admin.jpg"></a>
+					<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">这是你的用户名</span></a>
 					<p>昵称：这是你的昵称</p>
 					<ul>
 						<li>
-							<a class="tooltips" href="#"><span>个人信息</span><i class="lnr lnr-user"></i></a>
+							<a class="tooltips" href="${pageContext.request.contextPath}/myProfile"><span>个人信息</span><i class="lnr lnr-user"></i></a>
 						</li>
-						<li>
+						<!-- <li>
 							<a class="tooltips" href="#"><span>设置</span><i class="lnr lnr-cog"></i></a>
-						</li>
+						</li> -->
 						<li>
-							<a class="tooltips" href="#"><span>退出</span><i class="lnr lnr-power-switch"></i></a>
+							<a class="tooltips" href="${pageContext.request.contextPath}/webLogout"><span>退出</span><i class="lnr lnr-power-switch"></i></a>
 						</li>
 					</ul>
 				</div>

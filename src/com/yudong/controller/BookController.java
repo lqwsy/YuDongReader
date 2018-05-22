@@ -53,6 +53,30 @@ public class BookController {
 	public String goToUserLogin() {
 		return "book_upload";
 	}
+	
+	
+	/**
+	 * 我的图书
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping(value = "/myBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToMyBook() {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return "book_my";
+	}
 
 	/**
 	 * 上传图书

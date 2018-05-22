@@ -10,6 +10,7 @@
 <script type="application/x-javascript">
 	
 	
+	
 		addEventListener("load", function() {
 			setTimeout(hideURLbar, 0);
 		}, false);
@@ -18,6 +19,7 @@
 			window.scrollTo(0, 1);
 		}
 	
+
 
 </script>
 <link href="static/css/bootstrap.min.css" rel="stylesheet"
@@ -118,16 +120,22 @@
 		</a> </header>
 		<div style="border-top: 1px solid rgba(69, 74, 84, 0.7)"></div>
 		<div class="down">
-			<a href="#"><img src="images/admin.jpg"></a> <a href="#"><span
+			<a href="#"><img src="static/images/admin.jpg"></a> <a href="#"><span
 				class=" name-caret">这是你的用户名</span></a>
 			<p>昵称：这是你的昵称</p>
 			<ul>
 				<li><a class="tooltips" href="#"> <span>个人信息</span><i
-						class="lnr lnr-user"></i></a></li>
-				<li><a class="tooltips" href="#"><span>设置</span><i
-						class="lnr lnr-cog"></i></a></li>
-				<li><a class="tooltips" href="#"><span>退出</span><i
-						class="lnr lnr-power-switch"></i></a></li>
+						class="lnr lnr-user"></i>
+				</a></li>
+				<!-- <li>
+					<a class="tooltips" href="#">
+						<span>设置</span><i class="lnr lnr-cog"></i>
+					</a>
+				</li> -->
+				<li><a class="tooltips"
+					href="${pageContext.request.contextPath}/webLogout"> <span>退出</span><i
+						class="lnr lnr-power-switch"></i>
+				</a></li>
 			</ul>
 		</div>
 		<!--//down-->

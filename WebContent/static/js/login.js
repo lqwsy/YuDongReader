@@ -34,10 +34,4 @@ $(document).ready(function(){
             }
         }
 	});
-	
-	
-	
-	
-	
-	
 });
