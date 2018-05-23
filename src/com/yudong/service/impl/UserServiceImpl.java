@@ -27,13 +27,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int addUser(Users user) {
-		return usersDao.insert(user);
+	public boolean addUser(Users user) {
+		if(usersDao.insert(user)!=0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public int updatePassword(Users user){
-		return usersDao.updatePasswordByUserName(user);
+	public boolean updatePassword(Users user){
+		if(usersDao.updatePasswordByUserName(user)!=0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -52,8 +58,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int updateUserInfo(Users user) {
-		return usersDao.updateByPrimaryKeySelective(user);
+	public boolean updateUserInfo(Users user) {
+		if(usersDao.updateByPrimaryKeySelective(user)!=0){
+			return true;
+		}
+		return false;
 	}
 
 }

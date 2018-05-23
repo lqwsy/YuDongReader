@@ -1,12 +1,18 @@
 package com.yudong.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yudong.common.Constants;
+import com.yudong.entity.Books;
 import com.yudong.entity.Users;
 import com.yudong.service.UserService;
 import com.yudong.utils.JavaMD5Util;
@@ -192,13 +199,28 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/myProfile", method = { RequestMethod.GET, RequestMethod.POST })
 	public String goToMyProfile() {
-		
-		
-		
-		
-		
 		return "my_info";
 	}
+	
+	/**
+	 * 更新个人信息
+	 * @param 
+	 * @return 跳转到个人信息页面
+	 */
+	@RequestMapping(value = "/updateMyProfile", method = { RequestMethod.GET, RequestMethod.POST })
+	public String updateMyProfileController(HttpSession session, Users user) {
+		Users cur_user = (Users) session.getAttribute("cur_user");
+		
+		System.out.println("nickName is ==="+user.getUserNickName());
+		
+		cur_user.setUserNickName(user.getUserNickName());
+		if(userService.updateUserInfo(cur_user)){
+			session.removeAttribute("cur_user");
+			session.setAttribute("cur_user", cur_user);
+		}
+		return "my_info";
+	}
+	
 	
 
 	
@@ -215,7 +237,12 @@ public class UserController {
 		int role = user.getRole();//是管理员登陆还是普通用户登录，1：超管，2：普通用户
 		Users curUser = userService.findUserByUserNameAndPsw(user);
 		if(curUser!=null){
-			session.setAttribute("cur_user",curUser);//保存用户到session中，
+			if(session.getAttribute("cur_user")!=null){
+				session.removeAttribute("cur_user");
+				session.setAttribute("cur_user",curUser);//保存用户到session中，
+			}else{
+				session.setAttribute("cur_user",curUser);//保存用户到session中，
+			}
 			if(role == 1){
 				return "redirect:/adminUserManager";
 			}else{
@@ -338,6 +365,49 @@ public class UserController {
         	return "success";
         }
 		return "error";
+	}
+	
+	/**
+	 * 网页端用户头像上传
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@PostMapping("uploadCurUserHeadImg")
+    @ResponseBody
+	public String personalUploadControll(HttpSession session,HttpServletRequest request,String img,Model model) {
+		
+		String serverPath = request.getSession().getServletContext().getRealPath("/");//获取项目运行路径  
+		Base64 base64 = new Base64();
+        Users cur_user = (Users) session.getAttribute("cur_user");
+        
+        try {  
+            //实际的图片数据是从 data:image/jpeg;base64, 后开始的  
+            byte[] k = base64.decode(img.substring("data:image/jpeg;base64,".length()));  
+            InputStream is = new ByteArrayInputStream(k); 
+            String fileName = "";
+			if(cur_user.getHeadImage().equals("default.jpg")){
+				fileName = "static/img/" + cur_user.getUserName()+".jpg";//覆盖默认的图片
+				cur_user.setHeadImage(cur_user.getUserName()+".jpg");
+				userService.updateUserInfo(cur_user);//更新数据库头像名称
+				session.removeAttribute("cur_user");
+				session.setAttribute("cur_user", cur_user);
+			}else{
+				fileName = "static/img/" + cur_user.getHeadImage();//覆盖原来的图片
+			}
+			
+            File file = new File(serverPath + fileName);
+    		if(file.exists()){
+    			file.delete();
+    		}
+    		String imgFilePath = serverPath  + fileName;//图片绝对路径  
+            BufferedImage image = ImageIO.read(is);   
+            ImageIO.write(image, "jpg", new File(imgFilePath));//保存图片到本地
+//            return "redirect:/myProfile";  
+            return "my_info";  
+        } catch (Exception e) {  
+            e.printStackTrace();
+            return "error";  
+        }
 	}
 	
 }

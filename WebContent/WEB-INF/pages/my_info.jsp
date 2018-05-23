@@ -52,25 +52,24 @@
 							<h2 class="inner-tittle">个人信息展示页</h2>
 							<div class="graph-form">
 								<div class="form-body">
-									<form>
+									<form action="${pageContext.request.contextPath}/updateMyProfile" method="post" onSubmit="return check()">
 										<div class="form-group">
 											<label for="bookName">头像</label><br>
 											<a href="#" data-toggle="modal" data-target="#uploadImgModal">
-												<img id="pic-show"
-												src="static/images/1.jpg"
-												alt="点击修改" />
+												<img id="pic-show" src="static/img/${sessionScope.cur_user.headImage}" alt="点击修改" />
 												<label>点击修改</label>
 											</a>
 										</div>
 										<div class="form-group">
-											<label for="bookName">昵称</label>
-											<input type="text" class="form-control" id="bookName" placeholder="昵称">
+											<label for="userName">用户名</label>
+											<input type="text" class="form-control" name="userName" id="userName" value="${sessionScope.cur_user.userName}" readonly="readonly">
 										</div>
 										<div class="form-group">
-											<label for="bookAuthor">邮箱</label>
-											<input type="email" class="form-control" id="bookAuthor" placeholder="邮箱">
+											<label for="userNickName">昵称</label>
+											<input type="text" class="form-control" name="userNickName" id="userNickName" value="${sessionScope.cur_user.userNickName}">
 										</div>
 										<button type="submit" class="btn btn-default">修改</button> 
+										<button type="button" class="btn btn-default" onClick="javascript:history.back(-1)">返回</button> 
 									</form>
 								</div>	
 							</div>
@@ -83,7 +82,7 @@
 					</div>
 				</div>
 				<footer>
-					<p>Copyright © 2016.Company name All rights reserved.More Templates.</p>
+					<p>Copyright © 2014-2018.YUDONG Inc. All rights reserved.</p>
 				</footer>
 			</div>
 		</div>
@@ -94,9 +93,9 @@
 			</header>
 			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
 			<div class="down">
-				<a href="${pageContext.request.contextPath}/myProfile"><img src="static/images/admin.jpg"></a>
-				<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">这是你的用户名</span></a>
-				<p>昵称：这是你的昵称</p>
+				<a href="${pageContext.request.contextPath}/myProfile"><img src="static/img/${sessionScope.cur_user.headImage}"></a>
+				<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">用户：${sessionScope.cur_user.userName}</span></a>
+				<p>昵称：${sessionScope.cur_user.userNickName}</p>
 				<ul>
 					<li>
 						<a class="tooltips" href="${pageContext.request.contextPath}/myProfile"><span>个人信息</span><i class="lnr lnr-user"></i></a>
@@ -133,11 +132,9 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
-		</div>
 		
 		<!-- 模态框 -->
-		<div class="modal fade" id="uploadImgModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel">
+		<div class="modal fade" id="uploadImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -186,6 +183,15 @@
 				}
 				toggle = !toggle;
 			});
+			
+			function check(){
+				alert("check");
+				var userNickName = $('#userNickName').value;
+				if(userNickName==null || userNickName==undefined  || userNickName==""){
+					aler("请输入昵称");
+					return false;
+				}
+			}
 			
 			var jcropApi;
 			var srcImg = $("#img-show")[0];
@@ -242,10 +248,9 @@
 			}
 	
 			$("#upload-btn").click(function() {
-				alert("upload image");
 				var src = canvas.toDataURL("image/jpeg");
 				$.ajax({
-					url : "uploadImage",
+					url : "uploadCurUserHeadImg",
 					type : "POST",
 					data : {
 						img : src

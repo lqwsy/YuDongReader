@@ -52,29 +52,28 @@
 							<h2 class="inner-tittle">图书信息展示页</h2>
 							<div class="graph-form">
 								<div class="form-body">
-									<form>
+									<form action="${pageContext.request.contextPath}/updateMyBookInfo" method="post" onSubmit="return check()">
 										<div class="form-group">
 											<label for="bookName">图书封面</label><br>
 											<a href="#" data-toggle="modal" data-target="#uploadImgModal">
-												<img id="pic-show"
-												src="static/images/1.jpg"
-												alt="点击修改" />
+												<img id="pic-show" src="static/bookimg/${my_book_info.bookCoverPath}" alt="点击修改" />
 												<label>点击修改</label>
 											</a>
 										</div>
 										<div class="form-group">
 											<label for="bookName">图书名称</label>
-											<input type="text" class="form-control" id="bookName" placeholder="图书名称">
+											<input type="text" class="form-control" id="bookName" value="${my_book_info.bookName}">
 										</div>
 										<div class="form-group">
 											<label for="bookAuthor">图书作者</label>
-											<input type="email" class="form-control" id="bookAuthor" placeholder="图书作者">
+											<input type="text" class="form-control" id="bookAuthor" value="${my_book_info.bookAuthor}">
 										</div>
 										<div class="form-group">
-											<label for="bookAuthor">图书简介</label>
-											<input type="email" class="form-control" id="bookAuthor" placeholder="图书简介">
+											<label for="bookIntroduction">图书简介</label>
+											<input type="text" class="form-control" id="bookIntroduction" value="${my_book_info.bookIntroduction}">
 										</div>
-										<button type="submit" class="btn btn-default">修改</button> 
+										<button type="submit" class="btn btn-default">修改</button>
+										<button type="button" class="btn btn-default" onClick="javascript:history.back(-1)">返回</button>  
 									</form>
 								</div>	
 							</div>
@@ -87,7 +86,7 @@
 					</div>
 				</div>
 				<footer>
-					<p>Copyright © 2016.Company name All rights reserved.More Templates.</p>
+					<p>Copyright © 2014-2018.YUDONG Inc. All rights reserved.</p>
 				</footer>
 			</div>
 		</div>
@@ -98,16 +97,13 @@
 			</header>
 			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
 			<div class="down">
-				<a href="${pageContext.request.contextPath}/myProfile"><img src="static/images/admin.jpg"></a>
-				<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">这是你的用户名</span></a>
-				<p>昵称：这是你的昵称</p>
+				<a href="${pageContext.request.contextPath}/myProfile"><img src="static/img/${sessionScope.cur_user.headImage}"></a>
+				<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">用户：${sessionScope.cur_user.userName}</span></a>
+				<p>昵称：${sessionScope.cur_user.userNickName}</p>
 				<ul>
 					<li>
 						<a class="tooltips" href="${pageContext.request.contextPath}/myProfile"><span>个人信息</span><i class="lnr lnr-user"></i></a>
 					</li>
-					<!-- <li>
-						<a class="tooltips" href="#"><span>设置</span><i class="lnr lnr-cog"></i></a>
-					</li> -->
 					<li>
 						<a class="tooltips" href="${pageContext.request.contextPath}/webLogout?type=2"><span>退出</span><i class="lnr lnr-power-switch"></i></a>
 					</li>
@@ -140,8 +136,7 @@
 		</div>
 		
 		<!-- 模态框 -->
-		<div class="modal fade" id="uploadImgModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel">
+		<div class="modal fade" id="uploadImgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -149,7 +144,7 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel">上传头像</h4>
+						<h4 class="modal-title" id="myModalLabel">上传图书封面</h4>
 					</div>
 					<div class="modal-body">
 						<label for="src-input">选择图片：</label><input id="src-input"
@@ -191,6 +186,29 @@
 				toggle = !toggle;
 			});
 			
+			function check(){
+				alert("check");
+				var bookName = $('#bookName').value;
+				var bookAuthor = $('#bookAuthor').value;
+				var bookIntroduction = $('#bookIntroduction').value;
+				if(bookName==null || bookName==undefined  || bookName==""){
+					aler("请输入图书名称！");
+					return false;
+				}
+				if(bookAuthor==null || bookAuthor==undefined  || bookAuthor==""){
+					aler("请输入图书作者");
+					return false;
+				}
+				if(bookIntroduction==null || bookIntroduction==undefined  || bookIntroduction == ""){
+					aler("请输入图书简介！");
+					return false;
+				}
+				if(bookIntroduction.length<5 || bookIntroduction.length>100){
+					aler("请输入5-100字的图书简介！");
+					return false;
+				}
+			}
+			
 			var jcropApi;
 			var srcImg = $("#img-show")[0];
 			var srcInput = $("#src-input");
@@ -202,11 +220,12 @@
 				bgColor : 'black',
 				bgOpacity : 0.6,
 				bgFade : true,
-				aspectRatio : 1,
+				aspectRatio : 9/11,
 				borderOpacity : 0.4,
 				drawBorders : true,
 				dragEdges : true,
-				boxWidth : 300,
+				boxWidth : 180,
+				boxHeight: 220,
 				fadeTime : 400,
 				animationDelay : 20,
 				swingSpeed : 3,
@@ -240,16 +259,15 @@
 	
 				var img = new Image();
 				img.onload = function() {
-					cxt.drawImage(img, x, y, w, h, 0, 0, 200, 200);
+					cxt.drawImage(img, x, y, w, h, 0, 0, 90, 110);
 				};
 				img.src = srcImg.src;
 			}
 	
 			$("#upload-btn").click(function() {
-				alert("upload image");
 				var src = canvas.toDataURL("image/jpeg");
 				$.ajax({
-					url : "uploadImage",
+					url : "uploadCoverPath",
 					type : "POST",
 					data : {
 						img : src

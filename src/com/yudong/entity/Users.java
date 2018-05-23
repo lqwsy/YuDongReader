@@ -1,9 +1,15 @@
 package com.yudong.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Users {
-    private Integer userId;
+public class Users implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Integer userId;
 
     private String userName;
 
