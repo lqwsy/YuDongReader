@@ -79,6 +79,11 @@ public class BookServiceImpl implements BookService{
 		return bookDao.getDeleteBooks(uploadPerson);
 	}
 
+	@Override
+	public List<Books> getStateBooks(Integer bookState) {
+		return bookDao.getStateBooks(bookState);
+	}
+
 	
 
 }

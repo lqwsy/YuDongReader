@@ -35,6 +35,13 @@
     where vUserName = #{userName,jdbcType=VARCHAR}
   </select>
   
+  <!-- 根据手机号查找密码 -->
+  <select id="selectAllUsers" resultMap="BaseResultMap">
+    select 
+	<include refid="Base_Column_List" />
+    from users
+  </select>
+  
   
   <!-- 添加用户 -->
   <insert id="insert" parameterType="com.yudong.entity.Users">

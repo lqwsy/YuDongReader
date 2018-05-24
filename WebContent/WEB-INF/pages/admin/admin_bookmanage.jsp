@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html class="js cssanimations">
 <head>
@@ -53,20 +55,22 @@
 						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
 					</a></li>
 					<li class="tpl-left-nav-item">
-						<!-- 打开状态 a 标签添加 active 即可   --> <a href="javascript:;"
-						class="nav-link tpl-left-nav-link-list active"> <i
-							class="am-icon-bar-chart"></i> <span>系统管理</span> <!-- 列表打开状态的i标签添加 tpl-left-nav-more-ico-rotate 图表即90°旋转  -->
-							<i
-							class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
-					</a>
+						<!-- 打开状态 a 标签添加 active 即可   --> 
+						<a href="javascript:;" class="nav-link tpl-left-nav-link-list active"> 
+							<i class="am-icon-bar-chart"></i> 
+							<span>系统管理</span> 
+							<!-- 列表打开状态的i标签添加 tpl-left-nav-more-ico-rotate 图表即90°旋转  -->
+							<i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
+						</a>
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
-								<!-- 打开状态 a 标签添加 active 即可   --> <a
-								href="${pageContext.request.contextPath}/adminUserManager">
-									<i class="am-icon-angle-right"></i> <span>用户管理</span>
-							</a> <a href="${pageContext.request.contextPath}/adminBookManager"
-								class="active"> <i class="am-icon-angle-right"></i> <span>图书管理</span>
-							</a>
+								<!-- 打开状态 a 标签添加 active 即可   --> 
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3">
+									<span>用户管理</span>
+								</a>
+								<a href="${pageContext.request.contextPath}/adminBookManager"  class="active">
+									<span>图书管理</span>
+								</a>
 							</li>
 						</ul>
 					</li>
@@ -83,32 +87,39 @@
 			<div class="tpl-portlet-components">
 				<div class="portlet-title">
 					<div class="caption font-green bold">
-						<span class="am-icon-code"></span> 列表
+						<span class="am-icon-code"></span> 图书列表
 					</div>
 				</div>
 				<div class="tpl-block">
 					<div class="am-g">
 						<div class="am-u-sm-12 am-u-md-3">
 							<div class="am-form-group">
-								<select data-am-selected="{btnSize: &#39;sm&#39;}"
-									style="display: none;">
-									<option value="option1">小说</option>
-									<option value="option2">文学</option>
-									<option value="option3">传记</option>
-									<option value="option3">历史</option>
-									<option value="option3">经济</option>
-									<option value="option3">管理</option>
-									<option value="option3">励志</option>
+								<select id="bookClassificationType" data-am-selected="{btnSize: &#39;sm&#39;}" style="display: none;">
+									<option value="8">所有</option>
+									<option value="1">小说</option>
+									<option value="2">文学</option>
+									<option value="3">传记</option>
+									<option value="4">历史</option>
+									<option value="5">经济</option>
+									<option value="6">管理</option>
+									<option value="7">励志</option>
+								</select>
+							</div>
+						</div>
+						<div class="am-u-sm-12 am-u-md-3">
+							<div class="am-form-group">
+								<select id="bookStateSelected" data-am-selected="{btnSize: &#39;sm&#39;}" style="display: none;">
+									<option value="3">所有</option>
+									<option value="1">未审核</option>
+									<option value="2">已审核</option>
 								</select>
 							</div>
 						</div>
 						<div class="am-u-sm-12 am-u-md-3">
 							<div class="am-input-group am-input-group-sm">
-								<input type="text" class="am-form-field"> <span
-									class="am-input-group-btn">
-									<button
-										class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
-										type="button"></button>
+								<input type="text" class="am-form-field" > 
+								<span class="am-input-group-btn">
+									<button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
 								</span>
 							</div>
 						</div>
@@ -120,43 +131,73 @@
 									class="am-table am-table-striped am-table-hover table-main">
 									<thead>
 										<tr>
-											<th class="table-check"><input type="checkbox"
-												class="tpl-table-fz-check"></th>
-											<th class="table-id">ID</th>
+											<th class="table-id">序号</th>
 											<th class="table-title">书名</th>
 											<th class="table-type">作者</th>
 											<th class="table-type">分类</th>
 											<th class="table-author am-hide-sm-only">上传者</th>
 											<th class="table-date am-hide-sm-only">上传日期</th>
 											<th class="table-type">下载量</th>
+											<th class="table-type">审核状态</th>
 											<th class="table-set">操作</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td><input type="checkbox"></td>
-											<td>1</td>
-											<td><a href="#">斗破苍穹</a></td>
-											<td>天蟾豆</td>
-											<td class="am-hide-sm-only">小说</td>
-											<td>阿尔卑斯</td>
-											<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-											<td>1524</td>
-											<td>
-												<div class="am-btn-toolbar">
-													<div class="am-btn-group am-btn-group-xs">
-														<button
-															class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToBookDetail()">
-															<span class="am-icon-pencil-square-o"></span> 审核
-														</button>
-														<button
-															class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="deleteBook()">
-															<span class="am-icon-trash-o"></span> 删除
-														</button>
-													</div>
-												</div>
-											</td>
-										</tr>
+										<c:if test="${!empty sessionScope.admin_all_books}">
+											<c:forEach items="${sessionScope.admin_all_books}" var="book" varStatus="index">
+												<tr>
+													<td>${index.count}</td>
+													<td><a href="#">${book.bookName}</a></td>
+													<td>${book.bookAuthor}</td>
+													<c:choose>
+														<c:when test="${book.bookClassificationId==1}">
+															<td class="am-hide-sm-only">小说</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==2}">
+															<td class="am-hide-sm-only">文学</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==3}">
+															<td class="am-hide-sm-only">传记</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==4}">
+															<td class="am-hide-sm-only">历史</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==5}">
+															<td class="am-hide-sm-only">经济</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==6}">
+															<td class="am-hide-sm-only">管理</td>
+														</c:when>
+														<c:when test="${book.bookClassificationId==7}">
+															<td class="am-hide-sm-only">励志</td>
+														</c:when>
+													</c:choose>
+													<td>${book.uploadPerson}</td>
+													<td class="am-hide-sm-only"><fmt:formatDate value='${book.uploadTime}' pattern='yyyy-MM-dd hh:mm:ss' /></td>
+													<td>${book.bookDownloads}</td>
+													<c:choose>
+														<c:when test="${book.bookState==1}">
+															<td>未审核</td>
+														</c:when>
+														<c:when test="${book.bookState==2}">
+															<td>已审核</td>
+														</c:when>
+													</c:choose>
+													<td>
+														<div class="am-btn-toolbar">
+															<div class="am-btn-group am-btn-group-xs">
+																<button class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToBookDetail(${index.count})">
+																	<span class="am-icon-pencil-square-o"></span> 查看审核
+																</button>
+																<!-- <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="deleteBook()">
+																	<span class="am-icon-trash-o"></span> 删除
+																</button> -->
+															</div>
+														</div>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:if>
 									</tbody>
 								</table>
 								<div class="am-cf">
@@ -164,14 +205,11 @@
 										<ul class="am-pagination tpl-pagination">
 											<li class="am-disabled"><a href="#">«</a></li>
 											<li class="am-active"><a href="#">1</a></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
 											<li><a href="#">»</a></li>
 										</ul>
 									</div>
 								</div>
 								<hr>
-
 							</form>
 						</div>
 					</div>
@@ -180,18 +218,18 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		function turnToBookDetail() {
-			window.location.href = "/YuDongReader/bookDetail";
-			window.event.returnValue = false;//这个属性放到提交表单中的onclick事件中在这次点击事件不会提交表单，如果放到超链接中则在这次点击事件不执行超链接href属性
-		}
-
-		function deleteBook() {
-			alert("deleteBook");
-		}
-	</script>
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>
+	<script type="text/javascript">
+		$('#bookStateSelected').change(function(){
+			window.location.href = "/YuDongReader/adminGetStateBook?bookState="+$(this).val();
+			window.event.returnValue = false;
+		});
+		$('#bookClassificationType').change(function(){
+			window.location.href = "/YuDongReader/adminGetClassifyBook?bookClassificationId="+$(this).val();
+			window.event.returnValue = false;
+		});
+	</script>
 </body>
 </html>

@@ -31,6 +31,10 @@
   	select * from books where iBookClassificationId = #{classificationId,jdbcType=INTEGER}
   </select>
   
+  <select id="getStateBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from books where iBookState = #{bookState,jdbcType=INTEGER}
+  </select>
+  
   <select id="getBookById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   	select * from books where iBookId = #{bookId,jdbcType=INTEGER}
   </select>
@@ -44,7 +48,7 @@
   </select>
   
   <select id="getAllBooks" resultMap="BaseResultMap">
-  	select * from books
+  	select * from books where iBookState != 3
   </select>
   
   <select id="getBooksByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">

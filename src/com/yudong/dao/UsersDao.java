@@ -1,11 +1,14 @@
 package com.yudong.dao;
 
+import java.util.List;
+
 import com.yudong.entity.Users;
 
 public interface UsersDao {
 	
 	Users selectByPrimaryKey(Integer userId);
 	Users selectByUserName(String userName);
+	List<Users> selectAllUsers();
 	int insert(Users record);
 	int updatePasswordByUserName(Users user);
 	int updateByPrimaryKeySelective(Users record);

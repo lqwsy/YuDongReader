@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html class="js cssanimations">
 <head>
@@ -50,20 +52,22 @@
 						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
 					</a></li>
 					<li class="tpl-left-nav-item">
-						<!-- 打开状态 a 标签添加 active 即可   --> <a href="javascript:;"
-						class="nav-link tpl-left-nav-link-list active"> <i
-							class="am-icon-bar-chart"></i> <span>系统管理</span> <!-- 列表打开状态的i标签添加 tpl-left-nav-more-ico-rotate 图表即90°旋转  -->
-							<i
-							class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
-					</a>
+						<!-- 打开状态 a 标签添加 active 即可   --> 
+						<a href="javascript:;" class="nav-link tpl-left-nav-link-list active"> 
+							<i class="am-icon-bar-chart"></i> 
+							<span>系统管理</span> 
+							<!-- 列表打开状态的i标签添加 tpl-left-nav-more-ico-rotate 图表即90°旋转  -->
+							<i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
+						</a>
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
-								<!-- 打开状态 a 标签添加 active 即可   --> <a
-								href="${pageContext.request.contextPath}/adminUserManagers">
-									<i class="am-icon-angle-right"></i> <span>用户管理</span>
-							</a> <a href="${pageContext.request.contextPath}/adminBookManager"
-								class="active"> <i class="am-icon-angle-right"></i> <span>图书管理</span>
-							</a>
+								<!-- 打开状态 a 标签添加 active 即可   --> 
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3" class="active">
+									<span>用户管理</span>
+								</a>
+								<a href="${pageContext.request.contextPath}/adminBookManager">
+									<span>图书管理</span>
+								</a>
 							</li>
 						</ul>
 					</li>
@@ -73,8 +77,7 @@
 		<div class="tpl-content-wrapper">
 			<ol class="am-breadcrumb">
 				<li><a href="#" class="am-icon-home">系统管理</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/adminUserManager">用户管理</a>
+				<li><a href="${pageContext.request.contextPath}/adminUserManager?role=3">用户管理</a>
 				</li>
 				<li class="am-active">用户信息</li>
 			</ol>
@@ -88,42 +91,47 @@
 					<div class="am-g">
 						<div class="tpl-form-body tpl-form-line">
 							<form class="am-form tpl-form-line-form">
-								<intpu type="hidden" name="bookId" id="bookId" value="">
+								<input type="hidden" name="bookId" id="bookId" value="${sessionScope.countUser.userId}">
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">用户ID</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name"
-											readonly="readonly" placeholder="用户ID">
+										<input type="text" class="tpl-form-input" id="user-name" value="${sessionScope.countUser.userId}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">用户名</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name"
-											readonly="readonly" placeholder="用户名">
+										<input type="text" class="tpl-form-input" id="user-name"  value="${sessionScope.countUser.userName}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">昵称</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name"
-											readonly="readonly" placeholder="昵称">
+										<input type="text" class="tpl-form-input" id="user-name" value="${sessionScope.countUser.userNickName}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label class="am-u-sm-3 am-form-label">注册时间</label>
 									<div class="am-u-sm-9">
-										<input type="text" placeholder="注册时间" readonly="readonly">
+										<%-- <fmt:formatDate value='${user.registeTime}' pattern='yyyy-MM-dd hh:mm:ss' /> --%>
+										<input type="text" value="<fmt:formatDate value='${sessionScope.countUser.registeTime}' pattern='yyyy-MM-dd hh:mm:ss' />" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-phone" class="am-u-sm-3 am-form-label">账号状态
 									</label>
 									<div class="am-u-sm-9">
-										<select id="classificationType"
-											data-am-selected="{searchBox: 0}">
-											<option value="1">正常</option>
-											<option value="2">冻结</option>
+										<select id="userState" name="userState" data-am-selected="{searchBox: 0}">
+											<c:choose>
+												<c:when test="${sessionScope.countUser.userState==1}">
+													<option value="1" selected = "selected">正常</option>
+													<option value="2">冻结</option>
+												</c:when>
+												<c:otherwise>
+													<option value="1">正常</option>
+													<option value="2" selected = "selected">冻结</option>
+												</c:otherwise>
+											</c:choose>
 										</select>
 									</div>
 								</div>
@@ -132,18 +140,15 @@
 									<div class="am-u-sm-9">
 										<div class="am-form-group am-form-file">
 											<div class="tpl-form-file-img">
-												<img src="static/img/user01.png" alt="">
+												<img src="static/img/${sessionScope.countUser.headImage}" alt="">
 											</div>
 										</div>
-
 									</div>
 								</div>
 								<div class="am-form-group">
 									<div class="am-u-sm-9 am-u-sm-push-3">
-										<button type="button"
-											class="am-btn am-btn-primary tpl-btn-bg-color-success ">修改</button>
-										<button type="button"
-											class="am-btn am-btn-primary tpl-btn-bg-color-success ">返回</button>
+										<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="changeUserInfo()">修改</button>
+										<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="javascript:history.back(-1)">返回</button>
 									</div>
 								</div>
 							</form>
@@ -164,6 +169,13 @@
 							"option[value = '" + type + "']").attr("selected",
 							"selected");
 				});
+		function changeUserInfo(){
+			$('#userState').val();
+			$('#userState option:selected').val();
+			var userState = $('#userState').val();
+			window.location.href = "/YuDongReader/adminChangeUserInfo?userState="+userState;
+			window.event.returnValue = false;
+		}
 	</script>
 </body>
 </html>

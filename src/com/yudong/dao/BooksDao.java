@@ -15,6 +15,7 @@ public interface BooksDao {
     List<Books> getBooksByAuthor(String author);
     List<Books> getBooksByUploadPerson(String uploadPerson);
     List<Books> getClassificationBooks(Integer classificationId);//根据分类名称获取图书
+    List<Books> getStateBooks(int bookState);//根据图书状态获取图书
     List<Books> getDeleteBooks(String uploadPerson);//获取当前用户已删除的图书
     Books getBookById(Integer bookId);//根据图书ID获取图书
     Books getBookByName(String bookName);//根据图书名称获取图书

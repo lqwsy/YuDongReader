@@ -9,6 +9,7 @@ public interface BookService {
 	public boolean saveBook(Books book);//保存图书
 	public List<Books> getBooks();//获取今日下载排行前七图书
 	public List<Books> getClassificationBooks(Integer classificationId);//根据图书分类名称获取图书
+	public List<Books> getStateBooks(Integer bookState);//根据图书分类名称获取图书
 	public List<Books> getAllBooks();
 	public List<Books> getBooksByAuthor(String author);
 	public List<Books> getMyBooks(String uploadPerson);

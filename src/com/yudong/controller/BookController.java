@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,15 +66,46 @@ public class BookController {
 	
 	/**
 	 * 后台图书管理
+	 * 获取所有图书
 	 * @param 
 	 * @return 跳转到图书管理页面
 	 */
 	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToAdminBookManager() {
+	public String goToAdminBookManager(HttpSession session,Model model) {
 		//获取所有图书
-		
-		
-		
+		List<Books> admin_all_books = bookService.getAllBooks();
+		session.setAttribute("admin_all_books", admin_all_books);
+		return "admin/admin_bookmanage";
+	}
+	
+	/**
+	 * 后台图书管理
+	 * 获取指定状态图书
+	 * @param 
+	 * @return 跳转到图书管理页面
+	 */
+	@RequestMapping(value = "/adminGetStateBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String adminGetStateBookContrller(HttpSession session,Model model,int bookState) {
+		if(bookState != 0){
+			List<Books> stateBooks = bookService.getStateBooks(bookState);
+			session.setAttribute("admin_all_books", stateBooks);
+		}
+
+		return "admin/admin_bookmanage";
+	}
+	
+	/**
+	 * 后台图书管理
+	 * 获取指定类型图书
+	 * @param 
+	 * @return 跳转到图书管理页面
+	 */
+	@RequestMapping(value = "/adminGetClassifyBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String adminGetClassifyBookController(HttpSession session,Model model,int bookClassificationId) {
+		if(bookClassificationId != 0){
+			List<Books> classificationBooks = bookService.getClassificationBooks(bookClassificationId);
+			session.setAttribute("admin_all_books", classificationBooks);
+		}
 		return "admin/admin_bookmanage";
 	}
 	
@@ -85,18 +115,37 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/bookDetail", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToUserDetail() {
-		
-		
-		
-		
-		
+	public String goToUserDetail(HttpSession session,Model model,int count) {
+		List<Books> admin_all_books = (List<Books>) session.getAttribute("admin_all_books");
+		Books countBook = admin_all_books.get(count-1);
+		if(countBook!=null){
+			session.setAttribute("countBook", countBook);
+		}
 		return "admin/book_detail";
 	}
 	
 	/**
-	 * 图书信息页面
+	 * 后台图书管理
+	 * 审核图书
+	 * @param 
+	 * @return 跳转到图书信息页面
+	 */
+	@RequestMapping(value = "/checkBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String checkBookController(HttpSession session,int bookState) {
+		Books checkBook = (Books) session.getAttribute("countBook");
+		if(checkBook.getBookState()!=bookState){
+			checkBook.setBookState(bookState);
+			if(bookService.updateBookState(checkBook)){
+				session.setAttribute("countBook", checkBook);
+			}
+		}
+		return "admin/book_detail";
+	}
+	
+	/**
+	 * 我的图书信息页面
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
@@ -122,7 +171,7 @@ public class BookController {
 		if(index!=0){
 			List<Books> myBooks = (List<Books>) session.getAttribute("cur_user_books");
 			Books delete_book = myBooks.get(index-1);
-			delete_book.setBookState(3);
+			delete_book.setBookState(3);//3：图书为删除状态
 			if(bookService.updateBookState(delete_book)){
 				myBooks.remove(index-1);
 				session.setAttribute("cur_user_books", myBooks);
@@ -137,7 +186,6 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到已删除图书信息页面
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/myDeleteBooks", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getDeleteBook(HttpSession session) {
 		Users cur_user = (Users) session.getAttribute("cur_user");
