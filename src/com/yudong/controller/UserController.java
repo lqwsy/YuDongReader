@@ -164,19 +164,7 @@ public class UserController {
 	}
 	
 	
-	/**
-	 * 后台图书管理
-	 * @param 
-	 * @return 跳转到图书管理页面
-	 */
-	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToAdminBookManager() {
-		//获取所有图书
-		
-		
-		
-		return "admin/admin_bookmanage";
-	}
+
 
 	/**
 	 * 用户详细信息页面
@@ -269,6 +257,8 @@ public class UserController {
 	public String webLogoutController(HttpSession session,String type,Model model) {
 		session.removeAttribute("cur_user");
 		session.removeAttribute("cur_user_books");
+		session.removeAttribute("my_book_info");
+		session.removeAttribute("cur_user_delete_books");
 		if(type.equals("1")){
 			return "admin_login";
 		}else{
@@ -308,7 +298,8 @@ public class UserController {
 			if(verCode.equals(session.getAttribute(Constants.VER_CODE))){
 				curUser = new Users();
 				
-				curUser.setUserNickName(user.getPassword());//记住明文密码以防忘记,待删除
+//				curUser.setUserNickName(user.getPassword());//记住明文密码以防忘记,待删除
+				curUser.setUserNickName(user.getUserName());//初始昵称为用户名
 				
 				curUser.setUserName(user.getUserName());
 				curUser.setSalt(JavaMD5Util.generatorSalt());//生成盐值

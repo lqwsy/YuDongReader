@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.yudong.entity.Books;
 import com.yudong.entity.Users;
 import com.yudong.service.BookService;
+import com.yudong.utils.FileUtils;
 //import com.yudong.utils.FileUtils;
 import com.yudong.utils.IPUtils;
 
@@ -45,15 +46,6 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	private Map<String,Integer> classificationMap = new HashMap<>();
-
-	/**
-	 * 跳转到图书上传页面
-	 */
-	@RequestMapping(value = "/bookUpload", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToUserLogin() {
-		return "book_upload";
-	}
-	
 	
 	/**
 	 * 我的图书
@@ -74,6 +66,21 @@ public class BookController {
 	}
 	
 	/**
+	 * 后台图书管理
+	 * @param 
+	 * @return 跳转到图书管理页面
+	 */
+	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToAdminBookManager() {
+		//获取所有图书
+		
+		
+		
+		return "admin/admin_bookmanage";
+	}
+	
+	/**
+	 * 后台图书管理
 	 * 图书详细信息页面
 	 * @param 
 	 * @return 跳转到图书信息页面
@@ -93,20 +100,109 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/myBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBookInfo(HttpSession session,Model model,int bookId) {
-		if(bookId!=0){
-			if(session.getAttribute("my_book_info")!=null){
-				session.removeAttribute("my_book_info");
-				Books myBook = bookService.findBookById(bookId);
-				session.setAttribute("my_book_info", myBook);
-			}else{
-				Books myBook = bookService.findBookById(bookId);
-				session.setAttribute("my_book_info", myBook);
-			}
+	public String goToMyBookInfo(HttpSession session,Model model,int index) {
+		if(index!=0){
+			List<Books> myBooks = (List<Books>) session.getAttribute("cur_user_books");
+			session.setAttribute("my_book_info", myBooks.get(index-1));
 			return "book_info";
 		}
 		return "book_my";
+	}
+	
+	/**
+	 * 删除图书页面，状态设置为已删除
+	 * @param 
+	 * @return 跳转到图书信息页面
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/deleteBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String deleteBookController(HttpSession session,int index) {
+		if(index!=0){
+			List<Books> myBooks = (List<Books>) session.getAttribute("cur_user_books");
+			Books delete_book = myBooks.get(index-1);
+			delete_book.setBookState(3);
+			if(bookService.updateBookState(delete_book)){
+				myBooks.remove(index-1);
+				session.setAttribute("cur_user_books", myBooks);
+			}
+			return "book_my";
+		}
+		return "book_my";
+	}
+	
+	/**
+	 * 获取已删除图书页面
+	 * @param 
+	 * @return 跳转到已删除图书信息页面
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/myDeleteBooks", method = { RequestMethod.GET, RequestMethod.POST })
+	public String getDeleteBook(HttpSession session) {
+		Users cur_user = (Users) session.getAttribute("cur_user");
+		List<Books> delete_books = bookService.getMyDeleteBooks(cur_user.getUserName());
+		if(delete_books!=null && delete_books.size()!=0){
+			session.setAttribute("cur_user_delete_books", delete_books);
+			return "book_my_delete";
+		}
+		return "book_my_delete";
+	}
+	
+	/**
+	 * 恢复已删除图书页面
+	 * @param 
+	 * @return 跳转到已删除图书信息页面
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/recoveryDeleteBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public String recoveryDeleteBook(HttpSession session,int index) {
+		List<Books> delete_books = (List<Books>) session.getAttribute("cur_user_delete_books");
+		if(delete_books!=null && delete_books.size()!=0){
+			Books recoveryBook = delete_books.get(index-1);
+			recoveryBook.setBookState(1);//重新恢复为未审核状态
+			session.setAttribute("cur_user_delete_books", delete_books);
+			bookService.updateBookState(recoveryBook);
+			delete_books.remove(index-1);
+			session.setAttribute("cur_user_delete_books", delete_books);
+			return "book_my_delete";
+		}
+		return "book_my_delete";
+	}
+	
+	/**
+	 * 网页端图片封面上传
+	 * @param 
+	 * @return 跳转到登录页面
+	 */
+	@PostMapping("uploadCoverPath")
+    @ResponseBody
+	public String personalUploadControll(HttpSession session,HttpServletRequest request,String img,Model model) {
+		
+		String serverPath = request.getSession().getServletContext().getRealPath("/");//获取项目运行路径  
+        Base64 base64 = new Base64();
+        Books book = (Books) session.getAttribute("my_book_info");
+        if(book!=null){
+        	try {  
+                //实际的图片数据是从 data:image/jpeg;base64, 后开始的  
+                byte[] k = base64.decode(img.substring("data:image/jpeg;base64,".length()));  
+                InputStream is = new ByteArrayInputStream(k);  
+    			String fileName = "static/bookimg/" + book.getBookCoverPath();//覆盖原来的图片
+    			
+    			String imgFilePath = serverPath  + fileName;//图片绝对路径  
+                File file = new File(imgFilePath);
+        		if(file.exists()){
+        			file.delete();
+        		}
+        		BufferedImage image = ImageIO.read(is);   
+                ImageIO.write(image, "jpg", new File(imgFilePath));//保存图片到本地
+                return fileName;  
+            } catch (Exception e) {  
+                e.printStackTrace();
+                return "error";  
+            }
+        }
+        return "book_info";
 	}
 	
 	/**
@@ -115,10 +211,40 @@ public class BookController {
 	 * @return 图书信息页面
 	 */
 	@RequestMapping(value = "/updateMyBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String updateMyBookInfoController(HttpSession session,Model model,Books book) {
-		
-		return "book_my";
+	public String updateMyBookInfoController(HttpSession session,MultipartFile bookFile,Books book) {
+		String path = session.getServletContext().getRealPath("static/books/");
+		Books cur_book = (Books) session.getAttribute("my_book_info");
+		if(cur_book != null){
+			try {
+				if(bookFile!=null){
+					File dir = new File(path, cur_book.getBookLocation());
+					if (!dir.exists()) {
+						dir.mkdirs();
+					}
+					bookFile.transferTo(dir);
+				}
+				
+				System.out.println(book.getBookName());
+				System.out.println(book.getBookAuthor());
+				System.out.println(book.getBookIntroduction());
+				
+				cur_book.setBookName(book.getBookName());
+				cur_book.setBookAuthor(book.getBookAuthor());
+				cur_book.setBookIntroduction(book.getBookIntroduction());
+				if(bookService.saveBook(cur_book)){//保存到数据库
+					session.setAttribute("my_book_info", cur_book);
+				}
+				return "book_info";
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "book_info";
+		}
+		return "book_info";
 	}
+	
 	
 	/**
 	 * 上传图书页面
@@ -135,21 +261,22 @@ public class BookController {
 	 */
 	@RequestMapping(value = "/bookUploadController", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String bookUploadController(Books book,MultipartFile bookFile,MultipartFile bookimgFile, HttpServletRequest request) {
+	public String bookUploadController(HttpSession session,Books book,MultipartFile bookFile,MultipartFile bookimgFile, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("static/books/");
 		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg/");
+		Users cur_user = (Users) session.getAttribute("cur_user");
 		
 		long bookSize = bookFile.getSize();
 		System.out.println("bookupload: bookSize is ==="+bookSize);
 		book.setBookSize((float)bookSize);
 
-		book.setUploadPerson("login person");
+		book.setUploadPerson(cur_user.getUserName());
 		book.setUploadTime(new Date());
-		book.setBookState(1);
-		book.setBookDownloads(2533);
+		book.setBookState(1);//1：未审核，2：审核，3：删除
+		book.setBookDownloads(0);//初始下载量为0
 		
-		String fileName =  new SimpleDateFormat("YYmmss").format(new Date()) + ".txt";
-		String imgName = new SimpleDateFormat("YYmmss").format(new Date()) + ".jpg";
+		String fileName = FileUtils.getRandomFileName() + ".txt";
+		String imgName = FileUtils.getRandomFileName() + ".jpg";
 		
 		book.setBookLocation(fileName);
 		book.setBookCoverPath(imgName);
@@ -157,25 +284,25 @@ public class BookController {
 		System.out.println("bookupload: fileName is ==="+fileName);
 		System.out.println("bookupload: imgName is ==="+imgName);
 		
-		
 		try {
 			File dir = new File(path, fileName);
 			File imgdir = new File(imgpath, imgName);
-			if (!dir.exists() && !imgdir.exists()) {
+			if (!dir.exists()) {
 				dir.mkdirs();
+			}
+			if(!imgdir.exists()){
 				imgdir.mkdirs();
 			}
 			bookFile.transferTo(dir);
 			bookimgFile.transferTo(imgdir);
-			
 			bookService.saveBook(book);//保存到数据库
-			return fileName+imgName;
+			return "redirect:/uploadBook";
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return fileName+imgName;
+		return "redirect:/uploadBook";
 	}
 
 	/**
@@ -250,40 +377,6 @@ public class BookController {
 		List<Books> booksList = bookService.searchBooks(searchBookName);
 		return booksList;
 	}
-	
-	/**
-	 * 网页端图片封面上传
-	 * @param 
-	 * @return 跳转到登录页面
-	 */
-	@PostMapping("uploadCoverPath")
-    @ResponseBody
-	public String personalUploadControll(HttpSession session,HttpServletRequest request,String img,Model model) {
-		
-		String serverPath = request.getSession().getServletContext().getRealPath("/");//获取项目运行路径  
-        Base64 base64 = new Base64();
-        Books book = (Books) session.getAttribute("my_book_info");
-        
-        try {  
-            //实际的图片数据是从 data:image/jpeg;base64, 后开始的  
-            byte[] k = base64.decode(img.substring("data:image/jpeg;base64,".length()));  
-            InputStream is = new ByteArrayInputStream(k);  
-			String fileName = "static/bookimg/" + book.getBookCoverPath();//覆盖原来的图片
-			
-			String imgFilePath = serverPath  + fileName;//图片绝对路径  
-            File file = new File(imgFilePath);
-    		if(file.exists()){
-    			file.delete();
-    		}
-    		BufferedImage image = ImageIO.read(is);   
-            ImageIO.write(image, "jpg", new File(imgFilePath));//保存图片到本地
-            return fileName;  
-        } catch (Exception e) {  
-            e.printStackTrace();
-            return "error";  
-        }
-	}
-	
 	
 	/**
 	 * 初始化分类表

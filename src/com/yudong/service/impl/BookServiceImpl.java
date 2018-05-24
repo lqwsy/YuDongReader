@@ -19,8 +19,11 @@ public class BookServiceImpl implements BookService{
 	BooksDao bookDao;
 
 	@Override
-	public void saveBook(Books book) {
-		bookDao.insert(book);
+	public boolean saveBook(Books book) {
+		if(bookDao.insert(book)!=0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -54,8 +57,11 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public int updateBookState(Books book) {
-		return bookDao.updateByPrimaryKeySelective(book);
+	public boolean updateBookState(Books book) {
+		if(bookDao.updateByPrimaryKeySelective(book)!=0){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -66,6 +72,11 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public List<Books> getMyBooks(String uploadPerson) {
 		return bookDao.getBooksByUploadPerson(uploadPerson);
+	}
+
+	@Override
+	public List<Books> getMyDeleteBooks(String uploadPerson) {
+		return bookDao.getDeleteBooks(uploadPerson);
 	}
 
 	

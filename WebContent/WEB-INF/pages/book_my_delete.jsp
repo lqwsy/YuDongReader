@@ -45,7 +45,7 @@
 								<li>
 									<a href="#">首页</a>
 								</li>
-								<li class="active">我的图书</li>
+								<li class="active">已删除图书</li>
 							</ol>
 						</div>
 						<div class="graph-visual tables-main">
@@ -64,24 +64,16 @@
 											</tr>
 										</thead>
 										<tbody>
-											<c:if test="${!empty sessionScope.cur_user_books}">
-												<c:forEach items="${sessionScope.cur_user_books}" var="mybook" varStatus="index">
+											<c:if test="${!empty sessionScope.cur_user_delete_books}">
+												<c:forEach items="${sessionScope.cur_user_delete_books}" var="mybook" varStatus="index">
 													<tr>
 														<th scope="row">${index.count}</th>
 														<td>${mybook.bookName}</td>
 														<td>${mybook.bookAuthor}</td>
 														<td><fmt:formatDate value='${mybook.uploadTime}' pattern='yyyy-MM-dd hh:mm:ss' /></td>
-														<c:choose>
-															<c:when test="${mybook.bookState==1}">
-																<td>未审核</td>
-															</c:when>
-															<c:otherwise>
-																<td>已审核</td>
-															</c:otherwise>
-														</c:choose>
+														<td>已删除</td>
 														<td>
-															<a href="${pageContext.request.contextPath}/myBookInfo?index=${index.count}">编辑</a> |
-															<a href="${pageContext.request.contextPath}/deleteBook?index=${index.count}">删除</a>
+															<a href="${pageContext.request.contextPath}/recoveryDeleteBook?index=${index.count}">恢复</a>
 														</td>
 													</tr>
 												</c:forEach>

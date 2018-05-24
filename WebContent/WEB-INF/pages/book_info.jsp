@@ -62,15 +62,20 @@
 										</div>
 										<div class="form-group">
 											<label for="bookName">图书名称</label>
-											<input type="text" class="form-control" id="bookName" value="${my_book_info.bookName}">
+											<input type="text" class="form-control" id="bookName" name="bookName" value="${my_book_info.bookName}">
 										</div>
 										<div class="form-group">
 											<label for="bookAuthor">图书作者</label>
-											<input type="text" class="form-control" id="bookAuthor" value="${my_book_info.bookAuthor}">
+											<input type="text" class="form-control" id="bookAuthor" name="bookAuthor" value="${my_book_info.bookAuthor}">
 										</div>
 										<div class="form-group">
 											<label for="bookIntroduction">图书简介</label>
-											<input type="text" class="form-control" id="bookIntroduction" value="${my_book_info.bookIntroduction}">
+											<input type="text" class="form-control" id="bookIntroduction" name="bookIntroduction" value="${my_book_info.bookIntroduction}">
+										</div>
+										<div class="form-group">
+											<label for="bookFile">图书文件</label> 
+											<input type="file" id="bookFile" name="bookFile">
+											<p class="help-block">请上传小于20M的txt格式文件.</p>
 										</div>
 										<button type="submit" class="btn btn-default">修改</button>
 										<button type="button" class="btn btn-default" onClick="javascript:history.back(-1)">返回</button>  
@@ -113,19 +118,25 @@
 			<div class="menu">
 				<ul id="menu">
 					<li>
-						<a href="${pageContext.request.contextPath}/myBook">
-							<i class="lnr lnr-layers"></i>
-							<span>我的图书</span></a>
+						<a href="${pageContext.request.contextPath}/myProfile">
+						<i class="lnr lnr-layers"></i> 
+						<span>个人设置</span></a>
 					</li>
 					<li id="menu-academico">
 						<a href="#">
-							<i class="lnr lnr-book"></i>
-							<span>图书管理</span>
+							<i class="lnr lnr-book"></i> 
+							<span>图书管理</span> 
 							<span class="fa fa-angle-right" style="float: right"></span>
 						</a>
 						<ul id="menu-academico-sub">
+							<li id="menu-academico-boletim" >
+								<a href="${pageContext.request.contextPath}/myBook">我的图书</a>
+							</li>
 							<li id="menu-academico-avaliacoes">
 								<a href="${pageContext.request.contextPath}/uploadBook">图书上传</a>
+							</li>
+							<li id="menu-academico-avaliacoes" >
+								<a href="${pageContext.request.contextPath}/myDeleteBooks">已删除图书</a>
 							</li>
 						</ul>
 					</li>

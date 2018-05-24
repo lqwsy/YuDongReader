@@ -48,15 +48,14 @@
 						<h2 class="inner-tittle">填写图书信息</h2>
 						<div class="graph-form">
 							<div class="form-body">
-								<form id="bookUploadForm" action="${pageContext.request.contextPath }/bookUploadController"
-									method="post" enctype="multipart/form-data">
+								<form id="bookUploadForm" action="${pageContext.request.contextPath }/bookUploadController" method="post" enctype="multipart/form-data">
 									<div class="form-group">
 										<label for="bookName">图书名称</label> <input type="text"
-											class="form-control" id="bookName" placeholder="图书名称">
+											class="form-control" id="bookName" name="bookName" placeholder="图书名称">
 									</div>
 									<div class="form-group">
 										<label for="bookAuthor">图书作者</label> <input type="text"
-											class="form-control" id="bookAuthor" placeholder="图书作者">
+											class="form-control" id="bookAuthor" name="bookAuthor" placeholder="图书作者">
 									</div>
 									<div class="form-group">
 										<label for="bookIntroduction">图书简介</label>
@@ -65,8 +64,8 @@
 											placeholder="简介字数介于5到100个字"></textarea>
 									</div>
 									<div class="form-group">
-										<label for="bookClassificationId">图书分类</label> <select
-											name="bookClassificationId">
+										<label for="bookClassificationId">图书分类</label> 
+										<select name="bookClassificationId">
 											<option value="1">小说</option>
 											<option value="2">文学</option>
 											<option value="3">传记</option>
@@ -77,18 +76,18 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="bookFile">图书文件</label> <input type="file"
-											id="bookFile" name="bookFile">
+										<label for="bookFile">图书文件</label> 
+										<input type="file" id="bookFile" name="bookFile">
 										<p class="help-block">请上传小于20M的txt格式文件.</p>
 									</div>
 									<div class="form-group">
-										<label for="bookimgFile">图书封面</label> <input type="file"
-											id="bookimgFile" name="bookimgFile">
+										<label for="bookimgFile">图书封面</label> 
+										<input type="file" id="bookimgFile" name="bookimgFile">
 										<p class="help-block">请上传小于20k的90x110尺寸的jpg、png文件.</p>
 									</div>
+								<button type="submit" class="btn btn-default">上传</button>
+								</form>
 							</div>
-							<button type="submit" class="btn btn-default">上传</button>
-							</form>
 						</div>
 					</div>
 					<div class="forms-inner">
@@ -111,11 +110,11 @@
 		</header>
 		<div style="border-top: 1px solid rgba(69, 74, 84, 0.7)"></div>
 		<div class="down">
-			<a href="#"><img src="static/images/admin.jpg"></a> <a href="#"><span
-				class=" name-caret">这是你的用户名</span></a>
-			<p>昵称：这是你的昵称</p>
+			<a href="${pageContext.request.contextPath}/myProfile"><img src="static/img/${sessionScope.cur_user.headImage}"></a> 
+			<a href="${pageContext.request.contextPath}/myProfile"><span class=" name-caret">用户：${sessionScope.cur_user.userName}</span></a>
+			<p>昵称：${sessionScope.cur_user.userNickName}</p>
 			<ul>
-				<li><a class="tooltips" href="#"> <span>个人信息</span><i
+				<li><a class="tooltips" href="${pageContext.request.contextPath}/myProfile"> <span>个人信息</span><i
 						class="lnr lnr-user"></i>
 				</a></li>
 				<li><a class="tooltips"
@@ -127,21 +126,25 @@
 		<!--//down-->
 		<div class="menu">
 			<ul id="menu">
-				<li><a href="${pageContext.request.contextPath}/myBook"> <i
-						class="lnr lnr-layers"></i> <span>我的图书</span></a></li>
+				<li><a href="${pageContext.request.contextPath}/myProfile">
+						<i class="lnr lnr-layers"></i> <span>个人设置</span>
+				</a></li>
 				<li id="menu-academico"><a href="#"> <i
 						class="lnr lnr-book"></i> <span>图书管理</span> <span
 						class="fa fa-angle-right" style="float: right"></span>
 				</a>
-					<ul id="menu-academico-sub">
-						<li id="menu-academico-avaliacoes"><a
-							href="${pageContext.request.contextPath}/uploadBook">图书上传</a></li>
-					</ul></li>
+				<ul id="menu-academico-sub">
+					<li id="menu-academico-boletim"><a
+						href="${pageContext.request.contextPath}/myBook">我的图书</a></li>
+					<li id="menu-academico-avaliacoes"><a
+						href="${pageContext.request.contextPath}/uploadBook">图书上传</a></li>
+					<li id="menu-academico-avaliacoes"><a
+						href="${pageContext.request.contextPath}/myDeleteBooks">已删除图书</a></li>
+				</ul></li>
 			</ul>
 		</div>
 	</div>
 	<div class="clearfix"></div>
-	</div>
 	<script>
 		var toggle = true;
 		$(".sidebar-icon").click(
