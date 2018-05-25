@@ -10,6 +10,7 @@ public interface UsersDao {
 	Users selectByUserName(String userName);
 	List<Users> selectAllUsers();
 	int insert(Users record);
+	List<Users> getUserByRold(int role);
 	int updatePasswordByUserName(Users user);
 	int updateByPrimaryKeySelective(Users record);
 	

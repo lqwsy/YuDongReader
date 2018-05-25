@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.ModelAndView;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yudong.entity.Books;
 import com.yudong.entity.Users;
 import com.yudong.service.BookService;
@@ -55,9 +57,7 @@ public class BookController {
 	public String goToMyBook(HttpSession session,Model model) {
 		Users cur_user = (Users) session.getAttribute("cur_user");
 		if(cur_user!=null){
-			System.out.println("cur_user not null");
 			List<Books> mybooks = bookService.getMyBooks(cur_user.getUserName());
-			System.out.println("mybooks count is : "+mybooks.size());
 			session.setAttribute("cur_user_books", mybooks);
 			return "book_my";
 		}
@@ -71,11 +71,13 @@ public class BookController {
 	 * @return 跳转到图书管理页面
 	 */
 	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToAdminBookManager(HttpSession session,Model model) {
-		//获取所有图书
+	public ModelAndView goToAdminBookManager(HttpSession session,int pageNum) {
+		ModelAndView mav = new ModelAndView("admin/admin_bookmanage");
+		PageHelper.startPage(pageNum, 2);
 		List<Books> admin_all_books = bookService.getAllBooks();
-		session.setAttribute("admin_all_books", admin_all_books);
-		return "admin/admin_bookmanage";
+		PageInfo<Books> page=new PageInfo<Books>(admin_all_books);
+		mav.addObject("page", page);
+		return mav;
 	}
 	
 	/**
@@ -90,7 +92,6 @@ public class BookController {
 			List<Books> stateBooks = bookService.getStateBooks(bookState);
 			session.setAttribute("admin_all_books", stateBooks);
 		}
-
 		return "admin/admin_bookmanage";
 	}
 	
@@ -104,9 +105,33 @@ public class BookController {
 	public String adminGetClassifyBookController(HttpSession session,Model model,int bookClassificationId) {
 		if(bookClassificationId != 0){
 			List<Books> classificationBooks = bookService.getClassificationBooks(bookClassificationId);
+			session.setAttribute("book_bookClassify_selected", bookClassificationId);
 			session.setAttribute("admin_all_books", classificationBooks);
 		}
 		return "admin/admin_bookmanage";
+	}
+	
+	/**
+	 * 后台图书管理
+	 * 根据图书名作者名搜索图书
+	 * @param 
+	 * @return 跳转到图书管理页面
+	 */
+	@RequestMapping(value = "/adminSearchBook", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView adminSearchBookController(HttpSession session,Model model,String searchName) {
+		ModelAndView mav = new ModelAndView("admin/admin_bookmanage");
+		if(!searchName.equals("")){
+			if(searchName.equals("all")){
+				mav.setViewName("redirect:/adminBookManager?pageNum=1");
+				return mav;
+			}else{
+				PageHelper.startPage(1, 2);
+				List<Books> searchBooks = bookService.searchBooks(searchName);
+				PageInfo<Books> page=new PageInfo<Books>(searchBooks);
+				mav.addObject("page", page);
+			}
+		}
+		return mav;
 	}
 	
 	/**
@@ -115,15 +140,14 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/bookDetail", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToUserDetail(HttpSession session,Model model,int count) {
-		List<Books> admin_all_books = (List<Books>) session.getAttribute("admin_all_books");
-		Books countBook = admin_all_books.get(count-1);
+	public ModelAndView goToUserDetail(HttpSession session,int bookId) {
+		Books countBook = bookService.findBookById(bookId);
+		ModelAndView mav = new ModelAndView("admin/book_detail");
 		if(countBook!=null){
-			session.setAttribute("countBook", countBook);
+			mav.addObject("countBook", countBook);
 		}
-		return "admin/book_detail";
+		return mav;
 	}
 	
 	/**
@@ -133,15 +157,16 @@ public class BookController {
 	 * @return 跳转到图书信息页面
 	 */
 	@RequestMapping(value = "/checkBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String checkBookController(HttpSession session,int bookState) {
-		Books checkBook = (Books) session.getAttribute("countBook");
+	public ModelAndView checkBookController(HttpSession session,int bookState,int bookId) {
+		Books checkBook = bookService.findBookById(bookId);
+		ModelAndView mav = new ModelAndView("admin/book_detail");
 		if(checkBook.getBookState()!=bookState){
 			checkBook.setBookState(bookState);
 			if(bookService.updateBookState(checkBook)){
-				session.setAttribute("countBook", checkBook);
+				mav.addObject("countBook", checkBook);
 			}
 		}
-		return "admin/book_detail";
+		return mav;
 	}
 	
 	/**

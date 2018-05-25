@@ -5,44 +5,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html class="js cssanimations">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>鱼洞阅读后台管理系统</title>
-<link rel="stylesheet" href="static/css/amazeui.min.css">
-<link rel="stylesheet" href="static/css/admin.css">
-<link rel="stylesheet" href="static/css/app.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>鱼洞阅读后台管理系统</title>
+	<link rel="stylesheet" href="static/css/amazeui.min.css">
+	<link rel="stylesheet" href="static/css/admin.css">
+	<link rel="stylesheet" href="static/css/app.css">
 </head>
 <body data-type="generalComponents">
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"> <img
-			src="static/img/weblogo.png" alt="">
+		<a href="javascript:;" class="tpl-logo" style="margin:20px 0;"> 
+			<img src="static/img/weblogo.png" alt="">
 		</a>
 	</div>
-	<button
-		class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
-		data-am-collapse="{target: &#39;#topbar-collapse&#39;}">
-		<span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span>
-	</button>
 	<div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 		<ul
 			class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-			<li class="am-dropdown" data-am-dropdown=""
-				data-am-dropdown-toggle=""><a
-				class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-					<span class="tpl-header-list-user-nick">超级管理员</span><span
-					class="tpl-header-list-user-ico"> <img
-						src="static/img/user01.png"></span>
-			</a>
+			<li class="am-dropdown" data-am-dropdown="" data-am-dropdown-toggle="">
+				<a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+					<span class="tpl-header-list-user-nick">超级管理员</span><span class="tpl-header-list-user-ico"> 
+					<img src="static/img/user01.png"></span>
+				</a>
 				<ul class="am-dropdown-content">
 					<!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
 					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
-					<li><a
-						href="${pageContext.request.contextPath}/webLogout?type=1"><span
-							class="am-icon-power-off"></span> 退出</a></li>
-				</ul></li>
-			<li><a href="#" class="tpl-header-list-link"><span
-					class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+					<li><a href="${pageContext.request.contextPath}/webLogout?type=1">
+						<span class="am-icon-power-off"></span> 退出</a>
+					</li>
+				</ul>
+			</li>
+			<!-- <li><a href="#" class="tpl-header-list-link">
+				<span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a>
+			</li> -->
 		</ul>
 	</div>
 	</header>
@@ -51,9 +46,9 @@
 			<div class="tpl-left-nav-title">功能列表</div>
 			<div class="tpl-left-nav-list">
 				<ul class="tpl-left-nav-menu">
-					<li class="tpl-left-nav-item"><a href=""
-						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
-					</a></li>
+					<li class="tpl-left-nav-item">
+						<a href="" class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span></a>
+					</li>
 					<li class="tpl-left-nav-item">
 						<!-- 打开状态 a 标签添加 active 即可   --> 
 						<a href="javascript:;" class="nav-link tpl-left-nav-link-list active"> 
@@ -65,10 +60,10 @@
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
 								<!-- 打开状态 a 标签添加 active 即可   --> 
-								<a href="${pageContext.request.contextPath}/adminUserManager?role=3">
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3&pageNum=1">
 									<span>用户管理</span>
 								</a>
-								<a href="${pageContext.request.contextPath}/adminBookManager"  class="active">
+								<a href="${pageContext.request.contextPath}/adminBookManager?pageNum=1"  class="active">
 									<span>图书管理</span>
 								</a>
 							</li>
@@ -94,7 +89,7 @@
 					<div class="am-g">
 						<div class="am-u-sm-12 am-u-md-3">
 							<div class="am-form-group">
-								<select id="bookClassificationType" data-am-selected="{btnSize: &#39;sm&#39;}" style="display: none;">
+								<select id="bookClassificationType" style="display: none;">
 									<option value="8">所有</option>
 									<option value="1">小说</option>
 									<option value="2">文学</option>
@@ -108,7 +103,7 @@
 						</div>
 						<div class="am-u-sm-12 am-u-md-3">
 							<div class="am-form-group">
-								<select id="bookStateSelected" data-am-selected="{btnSize: &#39;sm&#39;}" style="display: none;">
+								<select id="bookStateSelected"  style="display: none;">
 									<option value="3">所有</option>
 									<option value="1">未审核</option>
 									<option value="2">已审核</option>
@@ -117,9 +112,9 @@
 						</div>
 						<div class="am-u-sm-12 am-u-md-3">
 							<div class="am-input-group am-input-group-sm">
-								<input type="text" class="am-form-field" > 
+								<input type="text" id="search-name" class="am-form-field" placeholder="请输入书名或作者名"> 
 								<span class="am-input-group-btn">
-									<button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
+									<button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button" onClick="searchBook()"></button>
 								</span>
 							</div>
 						</div>
@@ -143,11 +138,11 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:if test="${!empty sessionScope.admin_all_books}">
-											<c:forEach items="${sessionScope.admin_all_books}" var="book" varStatus="index">
+										<c:if test="${!empty page.list}">
+											<c:forEach items="${page.list}" var="book" varStatus="index">
 												<tr>
 													<td>${index.count}</td>
-													<td><a href="#">${book.bookName}</a></td>
+													<td><a href="${pageContext.request.contextPath}/bookDetail?index=${index.count}">${book.bookName}</a></td>
 													<td>${book.bookAuthor}</td>
 													<c:choose>
 														<c:when test="${book.bookClassificationId==1}">
@@ -186,12 +181,9 @@
 													<td>
 														<div class="am-btn-toolbar">
 															<div class="am-btn-group am-btn-group-xs">
-																<button class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToBookDetail(${index.count})">
+																<button class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToBookDetail(${book.bookId})">
 																	<span class="am-icon-pencil-square-o"></span> 查看审核
 																</button>
-																<!-- <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="deleteBook()">
-																	<span class="am-icon-trash-o"></span> 删除
-																</button> -->
 															</div>
 														</div>
 													</td>
@@ -203,9 +195,12 @@
 								<div class="am-cf">
 									<div class="am-fr">
 										<ul class="am-pagination tpl-pagination">
-											<li class="am-disabled"><a href="#">«</a></li>
-											<li class="am-active"><a href="#">1</a></li>
-											<li><a href="#">»</a></li>
+											<li class="<c:if test='${!page.hasPreviousPage}'> am-disabled </c:if>"><a href="${pageContext.request.contextPath}/adminBookManager?pageNum=${page.pageNum-1}">«</a></li>
+											<c:forEach items="${page.navigatepageNums}" var="p" >
+												<li class="<c:if test='${page.pageNum == p}'> am-active </c:if>"><a href="
+													${pageContext.request.contextPath}/adminBookManager?pageNum=${p}">${p}</a></li>
+											</c:forEach>
+											<li class="<c:if test='${!page.hasNextPage}'> am-disabled </c:if>"><a href="${pageContext.request.contextPath}/adminBookManager?pageNum=${page.pageNum+1}">»</a></li>
 										</ul>
 									</div>
 								</div>
@@ -222,14 +217,20 @@
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>
 	<script type="text/javascript">
-		$('#bookStateSelected').change(function(){
-			window.location.href = "/YuDongReader/adminGetStateBook?bookState="+$(this).val();
+		function turnToBookDetail(bookId) {
+			window.location.href = "/YuDongReader/bookDetail?bookId="+bookId;
 			window.event.returnValue = false;
-		});
-		$('#bookClassificationType').change(function(){
-			window.location.href = "/YuDongReader/adminGetClassifyBook?bookClassificationId="+$(this).val();
-			window.event.returnValue = false;
-		});
+		}
+		function searchBook(){
+			var searchName = $("#search-name").val().trim();
+			if(searchName!=""){
+				window.location.href = "/YuDongReader/adminSearchBook?searchName="+$.trim(searchName);
+				window.event.returnValue = false;
+			}else{
+				window.location.href = "/YuDongReader/adminSearchBook?searchName="+"all";
+				window.event.returnValue = false;
+			}
+		}
 	</script>
 </body>
 </html>

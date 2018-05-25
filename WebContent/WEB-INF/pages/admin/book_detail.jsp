@@ -16,7 +16,7 @@
 <body data-type="generalComponents">
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"><img src="static/img/weblogo.png" alt=""></a>
+		<a href="javascript:;" class="tpl-logo" style="margin:20px 0;"><img src="static/img/weblogo.png" alt=""></a>
 	</div>
 	<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
 		data-am-collapse="{target: &#39;#topbar-collapse&#39;}">
@@ -37,9 +37,9 @@
 					</li>
 				</ul>
 			</li>
-			<li><a href="#" class="tpl-header-list-link">
+			<!-- <li><a href="#" class="tpl-header-list-link">
 				<span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a>
-			</li>
+			</li> -->
 		</ul>
 	</div>
 	</header>
@@ -62,10 +62,10 @@
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
 								<!-- 打开状态 a 标签添加 active 即可   --> 
-								<a href="${pageContext.request.contextPath}/adminUserManager?role=3">
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3&pageNum=1">
 									<span>用户管理</span>
 								</a>
-								<a href="${pageContext.request.contextPath}/adminBookManager"  class="active">
+								<a href="${pageContext.request.contextPath}/adminBookManager?pageNum=1"  class="active">
 									<span>图书管理</span>
 								</a>
 							</li>
@@ -77,7 +77,7 @@
 		<div class="tpl-content-wrapper">
 			<ol class="am-breadcrumb">
 				<li><a href="#" class="am-icon-home">系统管理</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminBookManager">图书管理</a></li>
+				<li><a href="${pageContext.request.contextPath}/adminBookManager?pageNum=1">图书管理</a></li>
 				<li class="am-active">图书详情</li>
 			</ol>
 			<div class="tpl-portlet-components">
@@ -93,20 +93,20 @@
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">图书名称</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="bookName" value="${sessionScope.countBook.bookName}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="bookName" value="${countBook.bookName}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">图书作者</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name" value="${sessionScope.countBook.bookAuthor}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="user-name" value="${countBook.bookAuthor}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-phone" class="am-u-sm-3 am-form-label">图书分类
 									</label>
 									<div class="am-u-sm-9">
-										<input type="hidden" id="bookClassificationId" value="${sessionScope.countBook.bookClassificationId}">
+										<input type="hidden" id="bookClassificationId" value="${countBook.bookClassificationId}">
 										<select id="classificationType" disabled="disabled">
 											<option value="1">小说</option>
 											<option value="2">文学</option>
@@ -121,13 +121,13 @@
 								<div class="am-form-group">
 									<label class="am-u-sm-3 am-form-label">上传时间</label>
 									<div class="am-u-sm-9">
-										<input type="text" value="<fmt:formatDate value='${sessionScope.countBook.uploadTime}' pattern='yyyy-MM-dd hh:mm:ss' />" readonly="readonly">
+										<input type="text" value="<fmt:formatDate value='${countBook.uploadTime}' pattern='yyyy-MM-dd hh:mm:ss' />" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-intro" class="am-u-sm-3 am-form-label">图书简介</label>
 									<div class="am-u-sm-9">
-										<textarea readonly="readonly" class="" rows="10" id="bookIntroduction">${sessionScope.countBook.bookIntroduction}</textarea>
+										<textarea readonly="readonly" class="" rows="10" id="bookIntroduction">${countBook.bookIntroduction}</textarea>
 									</div>
 								</div>
 								<div class="am-form-group">
@@ -135,7 +135,7 @@
 									<div class="am-u-sm-9">
 										<div class="am-form-group am-form-file">
 											<div class="tpl-form-file-img">
-												<img src="static/bookimg/${sessionScope.countBook.bookCoverPath}" alt="">
+												<img src="static/bookimg/${countBook.bookCoverPath}" alt="">
 											</div>
 										</div>
 									</div>
@@ -143,7 +143,7 @@
 								<div class="am-form-group">
 									<label for="user-intro" class="am-u-sm-3 am-form-label">图书下载</label>
 									<div class="am-u-sm-9">
-										<a href="static/book/${sessionScope.countBook.bookLocation}" download="${sessionScope.countBook.bookName}.txt">下载图书</a>
+										<a href="static/book/${countBook.bookLocation}" download="${countBook.bookName}.txt">下载图书</a>
 									</div>
 								</div>
 								<div class="am-form-group">
@@ -151,11 +151,11 @@
 									<div class="am-u-sm-9">
 										<select id="bookStateSelected" name="userState" data-am-selected="{searchBox: 0}">
 											<c:choose>
-												<c:when test="${sessionScope.countBook.bookState==1}">
+												<c:when test="${countBook.bookState==1}">
 													<option value="1"  selected="selected">未审核</option>
 													<option value="2">审核通过</option>
 												</c:when>
-												<c:when test="${sessionScope.countBook.bookState==2}">
+												<c:when test="${countBook.bookState==2}">
 													<option value="1">未审核</option>
 													<option value="2" selected="selected">审核通过</option>
 												</c:when>
@@ -166,7 +166,7 @@
 								<div class="am-form-group">
 									<div class="am-u-sm-9 am-u-sm-push-3">
 										<button type="button"
-											class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="checkBook()">确认修改</button>
+											class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="checkBook(${countBook.bookId})">确认修改</button>
 										<button type="button"
 											class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="javascript:history.back(-1)">返回</button>
 									</div>
@@ -185,13 +185,16 @@
 		$(document).ready(
 				function() {
 					var type = $('#bookClassificationId').val();
-					if(type!=undefined){
+					if(type!=null || type!=undefined){
 						$("#classificationType").find("option[value = '" + type + "']").attr("selected","selected");
 					}
+					if (!$.AMUI.support.mutationobserver) {
+						$("#classificationType").trigger('changed.selected.amui');
+					}
 				});
-		function checkBook(){
+		function checkBook(bookId){
 			var bookStates = $('#bookStateSelected').val();
-			window.location.href = "/YuDongReader/checkBook?bookState="+bookStates;
+			window.location.href = "/YuDongReader/checkBook?bookState="+bookStates+"&bookId="+bookId;
 			window.event.returnValue = false;
 		}
 	</script>

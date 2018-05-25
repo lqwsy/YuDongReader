@@ -16,7 +16,7 @@
 <body data-type="generalComponents">
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"> <img
+		<a href="javascript:;" class="tpl-logo" style="margin:20px 0;">  <img
 			src="static/img/weblogo.png" alt="">
 		</a>
 	</div>
@@ -41,11 +41,11 @@
 					</li>
 				</ul>
 			</li>
-			<li>
+			<%-- <li>
 				<a href="${pageContext.request.contextPath}/webLogout" class="tpl-header-list-link"> 
 				<span class="am-icon-sign-out tpl-header-list-ico-out-size"></span>
 				</a>
-			</li>
+			</li> --%>
 		</ul>
 	</div>
 	</header>
@@ -68,10 +68,10 @@
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
 								<!-- 打开状态 a 标签添加 active 即可   --> 
-								<a href="${pageContext.request.contextPath}/adminUserManager?role=3" class="active">
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3&pageNum=1" class="active">
 									<span>用户管理</span>
 								</a>
-								<a href="${pageContext.request.contextPath}/adminBookManager">
+								<a href="${pageContext.request.contextPath}/adminBookManager?pageNum=1">
 									<span>图书管理</span>
 								</a>
 							</li>
@@ -99,12 +99,12 @@
 							<div class="am-form-group">
 								<select id="userRole" data-am-selected="{btnSize: &#39;sm&#39;}" style="display: none;">
 									<c:choose>
-										<c:when test="${select_role==1}">
+										<c:when test="${role==1}">
 											<option value="3">所有</option>
 											<option value="1" selected="selected">超级管理员</option>
 											<option value="2">普通用户</option>
 										</c:when>
-										<c:when test="${select_role==2}">
+										<c:when test="${role==2}">
 											<option value="3">所有</option>
 											<option value="1">超级管理员</option>
 											<option value="2" selected="selected">普通用户</option>
@@ -144,8 +144,8 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:if test="${!empty sessionScope.admin_all_users}">
-											<c:forEach items="${sessionScope.admin_all_users}" var="user" varStatus="index">
+										<c:if test="${!empty page.list}">
+											<c:forEach items="${page.list}" var="user">
 											<tr>
 												<td>${user.userId}</td>
 												<td><a href="#">${user.userName}</a></td>
@@ -170,7 +170,7 @@
 												<td>
 													<div class="am-btn-toolbar">
 														<div class="am-btn-group am-btn-group-xs">
-															<button class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToUserDetail(${index.count})">
+															<button class="am-btn am-btn-default am-btn-xs am-text-secondary" onClick="turnToUserDetail(${user.userId})">
 																<span class="am-icon-pencil-square-o"></span>查看修改
 															</button>
 														</div>
@@ -184,14 +184,16 @@
 								<div class="am-cf">
 									<div class="am-fr">
 										<ul class="am-pagination tpl-pagination">
-											<li class="am-disabled"><a href="#">«</a></li>
-											<li class="am-active"><a href="#">1</a></li>
-											<li><a href="#">»</a></li>
+											<li class="<c:if test='${!page.hasPreviousPage}'> am-disabled </c:if>"><a href="${pageContext.request.contextPath}/adminUserManager?role=${role}&pageNum=${page.pageNum-1}">«</a></li>
+											<c:forEach items="${page.navigatepageNums}" var="p" >
+												<li class="<c:if test='${page.pageNum == p}'> am-active </c:if>"><a href="
+													${pageContext.request.contextPath}/adminUserManager?role=${role}&pageNum=${p}">${p}</a></li>
+											</c:forEach>
+											<li class="<c:if test='${!page.hasNextPage}'> am-disabled </c:if>"><a href="${pageContext.request.contextPath}/adminUserManager?role=${role}&pageNum=${page.pageNum+1}">»</a></li>
 										</ul>
 									</div>
 								</div>
 								<hr>
-
 							</form>
 						</div>
 					</div>
@@ -204,7 +206,7 @@
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>
 	<script type="text/javascript">
-		function turnToUserDetail(count) {
+		function turnToUserDetail(userId) {
 		
 		  /* var f=document.createElement("form");
 		  f.action="/YuDongReader/userDetail";
@@ -212,7 +214,7 @@
 		  f.innerHTML="<input type='hidden' name='count' value='"+count+"'/>";
 		  document.appendChild(f);
 		  f.submit() */
-			window.location.href = "/YuDongReader/userDetail?count="+count;
+			window.location.href = "/YuDongReader/userDetail?userId="+userId;
 			window.event.returnValue = false;
 		}
 
@@ -221,7 +223,7 @@
 		}
 
 		$('#userRole').change(function(){
-			window.location.href = "/YuDongReader/adminUserManager?role="+$(this).val();
+			window.location.href = "/YuDongReader/adminUserManager?role="+$(this).val()+"&pageNum=1";
 			window.event.returnValue = false;
 		});
 	</script>

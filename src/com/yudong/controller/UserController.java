@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -22,10 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yudong.common.Constants;
+import com.yudong.entity.Books;
 import com.yudong.entity.Users;
 import com.yudong.service.UserService;
 import com.yudong.utils.JavaMD5Util;
@@ -156,32 +159,22 @@ public class UserController {
 	 * @return 跳转到用户管理页面
 	 */
 	@RequestMapping(value = "/adminUserManager", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToAdminUserManager(HttpSession session,int role,Model model) {
+	public ModelAndView goToAdminUserManager(HttpSession session,int role,int pageNum,Model model) {
 		//获取所有用户
-		List<Users> allUsers = userService.getAllUsers();
-		if(role==1){//超级管理员
-			List<Users> superUsers  = new ArrayList<>();
-			for(int i=0;i<allUsers.size();i++){
-				if(allUsers.get(i).getRole()==1){
-					superUsers.add(allUsers.get(i));
-				}
-			}
-			model.addAttribute("select_role", role);
-			session.setAttribute("admin_all_users", superUsers);
-		}else if(role==2){
-			List<Users> normalUsers  = new ArrayList<>();
-			for(int i=0;i<allUsers.size();i++){
-				if(allUsers.get(i).getRole()==2){
-					normalUsers.add(allUsers.get(i));
-				}
-			}
-			model.addAttribute("select_role", role);
-			session.setAttribute("admin_all_users", normalUsers);
-		}else{
-			model.addAttribute("select_role", role);
-			session.setAttribute("admin_all_users", allUsers);
+		ModelAndView mav = new ModelAndView("admin/admin_usermanage");
+		PageHelper.startPage(pageNum, 2);
+		if(role==1||role==2){
+			List<Users> admin_all_users = userService.getUserByRold(role);
+			PageInfo<Users> page=new PageInfo<Users>(admin_all_users);
+			mav.addObject("page", page);
+			mav.addObject("role", role);
+		}else if(role==3){
+			List<Users> admin_all_users = userService.getAllUsers();
+			PageInfo<Users> page=new PageInfo<Users>(admin_all_users);
+			mav.addObject("page", page);
+			mav.addObject("role", role);
 		}
-		return "admin/admin_usermanage";
+		return mav;
 	}
 
 	/**
@@ -189,15 +182,14 @@ public class UserController {
 	 * @param 
 	 * @return 跳转到用户详细信息页面
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/userDetail", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToUserDetail(HttpSession session,int count) {
-		List<Users> admin_all_users = (List<Users>) session.getAttribute("admin_all_users");
-		Users countUser = admin_all_users.get(count-1);
+	public ModelAndView goToUserDetail(HttpSession session,int userId) {
+		Users countUser = userService.findUserById(userId);
+		ModelAndView mav = new ModelAndView("admin/user_detail");
 		if(countUser!=null){
-			session.setAttribute("countUser", countUser);
+			mav.addObject("countUser", countUser);
 		}
-		return "admin/user_detail";
+		return mav;
 	}
 	
 	
@@ -207,17 +199,17 @@ public class UserController {
 	 * @return 跳转到用户详细信息页面
 s	 */
 	@RequestMapping(value = "/adminChangeUserInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String adminChangeUserInfoController(HttpSession session,int userState) {
-		Users countUser = (Users) session.getAttribute("countUser");
-		System.out.println("userstate is ========= "+userState);
+	public ModelAndView adminChangeUserInfoController(HttpSession session,int userState,int userId) {
+		Users countUser = userService.findUserById(userId);
+		ModelAndView mav = new ModelAndView("admin/user_detail");
 		if(countUser!=null && countUser.getUserState()!=userState){
 			countUser.setUserState(userState);
 			if(userService.updateUserInfo(countUser)){
-				session.setAttribute("countUser", countUser);
+				mav.addObject("countUser", countUser);
 			}
-			return "admin/user_detail";
+			return mav;
 		}
-		return "admin/user_detail";
+		return mav;
 	}
 	
 	/**
@@ -272,7 +264,7 @@ s	 */
 				session.setAttribute("cur_user",curUser);//保存用户到session中，
 			}
 			if(role == 1 && curUser.getRole()==1){
-				return "redirect:/adminUserManager?role=3";
+				return "redirect:/adminUserManager?role=3&pageNum=1";
 			}else{
 				return "redirect:/myBook";
 			}
@@ -294,14 +286,14 @@ s	 */
 	 *  @return 跳转到登录
 	 * */
 	@RequestMapping(value = "/webLogout", method = {RequestMethod.GET, RequestMethod.POST })
-	public String webLogoutController(HttpSession session,String type,Model model) {
+	public String webLogoutController(HttpSession session,int type,Model model) {
 		session.removeAttribute("cur_user");
 		session.removeAttribute("cur_user_books");
 		session.removeAttribute("my_book_info");
 		session.removeAttribute("cur_user_delete_books");
 		session.removeAttribute("countUser");
-		if(type.equals("1")){
-			return "admin_login";
+		if(type==1){
+			return "admin/admin_login";
 		}else{
 			return "login";
 		}

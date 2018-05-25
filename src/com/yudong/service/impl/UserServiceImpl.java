@@ -72,4 +72,9 @@ public class UserServiceImpl implements UserService {
 		return usersDao.selectAllUsers();
 	}
 
+	@Override
+	public List<Users> getUserByRold(int role) {
+		return usersDao.getUserByRold(role);
+	}
+
 }

@@ -18,5 +18,7 @@ public interface BookService {
 	public Books findBookById(int bookId);//根据ID查找图书
 	public Books findBookByName(String bookName);//根据图书名称来查找图书
 	public List<Books> searchBooks(String searchBookName);
+	public List<Books> getPageBooks(int startRaw,int count);
+	public int getAllBookCount();
 	
 }

@@ -92,5 +92,15 @@ public class YuDongTest {
 	}
 	
 	
+	//测试获取分页图书
+	@Test
+	public void testgetPageBooks(){
+		List<Books> books = bookService.getPageBooks(7, 4);
+		for(int i=0;i<books.size();i++){
+			System.out.println(books.get(i).getBookName()+"===");
+		}
+	}
+	
+	
 
 }

@@ -84,6 +84,16 @@ public class BookServiceImpl implements BookService{
 		return bookDao.getStateBooks(bookState);
 	}
 
+	@Override
+	public List<Books> getPageBooks(int startRaw, int count) {
+		return bookDao.getPageBooks(startRaw, count);
+	}
+
+	@Override
+	public int getAllBookCount() {
+		return bookDao.getAllBookCount();
+	}
+
 	
 
 }

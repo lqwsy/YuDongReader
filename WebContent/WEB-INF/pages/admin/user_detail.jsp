@@ -15,7 +15,7 @@
 <body data-type="generalComponents">
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"> <img
+		<a href="javascript:;" class="tpl-logo" style="margin:20px 0;">  <img
 			src="static/img/weblogo.png" alt="">
 		</a>
 	</div>
@@ -38,8 +38,8 @@
 					<li><a href="${pageContext.request.contextPath}/webLogout?type=1"><span class="am-icon-power-off"></span> 退出</a>
 					</li>
 				</ul></li>
-			<li><a href="#" class="tpl-header-list-link"><span
-					class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+			<!-- <li><a href="#" class="tpl-header-list-link"><span
+					class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li> -->
 		</ul>
 	</div>
 	</header>
@@ -62,10 +62,10 @@
 						<ul class="tpl-left-nav-sub-menu" style="display: block">
 							<li>
 								<!-- 打开状态 a 标签添加 active 即可   --> 
-								<a href="${pageContext.request.contextPath}/adminUserManager?role=3" class="active">
+								<a href="${pageContext.request.contextPath}/adminUserManager?role=3&pageNum=1" class="active">
 									<span>用户管理</span>
 								</a>
-								<a href="${pageContext.request.contextPath}/adminBookManager">
+								<a href="${pageContext.request.contextPath}/adminBookManager?pageNum=1">
 									<span>图书管理</span>
 								</a>
 							</li>
@@ -77,7 +77,7 @@
 		<div class="tpl-content-wrapper">
 			<ol class="am-breadcrumb">
 				<li><a href="#" class="am-icon-home">系统管理</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminUserManager?role=3">用户管理</a>
+				<li><a href="${pageContext.request.contextPath}/adminUserManager?role=3&pageNum=1">用户管理</a>
 				</li>
 				<li class="am-active">用户信息</li>
 			</ol>
@@ -91,30 +91,29 @@
 					<div class="am-g">
 						<div class="tpl-form-body tpl-form-line">
 							<form class="am-form tpl-form-line-form">
-								<input type="hidden" name="bookId" id="bookId" value="${sessionScope.countUser.userId}">
+								<input type="hidden" name="bookId" id="bookId" value="${countUser.userId}">
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">用户ID</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name" value="${sessionScope.countUser.userId}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="user-name" value="${countUser.userId}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">用户名</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name"  value="${sessionScope.countUser.userName}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="user-name"  value="${countUser.userName}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">昵称</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name" value="${sessionScope.countUser.userNickName}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="user-name" value="${countUser.userNickName}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label class="am-u-sm-3 am-form-label">注册时间</label>
 									<div class="am-u-sm-9">
-										<%-- <fmt:formatDate value='${user.registeTime}' pattern='yyyy-MM-dd hh:mm:ss' /> --%>
-										<input type="text" value="<fmt:formatDate value='${sessionScope.countUser.registeTime}' pattern='yyyy-MM-dd hh:mm:ss' />" readonly="readonly">
+										<input type="text" value="<fmt:formatDate value='${countUser.registeTime}' pattern='yyyy-MM-dd hh:mm:ss' />" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
@@ -123,7 +122,7 @@
 									<div class="am-u-sm-9">
 										<select id="userState" name="userState" data-am-selected="{searchBox: 0}">
 											<c:choose>
-												<c:when test="${sessionScope.countUser.userState==1}">
+												<c:when test="${countUser.userState==1}">
 													<option value="1" selected = "selected">正常</option>
 													<option value="2">冻结</option>
 												</c:when>
@@ -140,14 +139,14 @@
 									<div class="am-u-sm-9">
 										<div class="am-form-group am-form-file">
 											<div class="tpl-form-file-img">
-												<img src="static/img/${sessionScope.countUser.headImage}" alt="">
+												<img src="static/img/${countUser.headImage}" alt="">
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="am-form-group">
 									<div class="am-u-sm-9 am-u-sm-push-3">
-										<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="changeUserInfo()">修改</button>
+										<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="changeUserInfo(${countUser.userId})">修改</button>
 										<button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="javascript:history.back(-1)">返回</button>
 									</div>
 								</div>
@@ -162,18 +161,10 @@
 	<script src="static/js/amazeui.min.js"></script>
 	<script src="static/js/app.js"></script>
 	<script type="text/javascript">
-		$(document).ready(
-				function() {
-					var type = 1;
-					$("#classificationType").find(
-							"option[value = '" + type + "']").attr("selected",
-							"selected");
-				});
-		function changeUserInfo(){
-			$('#userState').val();
+		function changeUserInfo(userId){
 			$('#userState option:selected').val();
 			var userState = $('#userState').val();
-			window.location.href = "/YuDongReader/adminChangeUserInfo?userState="+userState;
+			window.location.href = "/YuDongReader/adminChangeUserInfo?userState="+userState+"&userId="+userId;
 			window.event.returnValue = false;
 		}
 	</script>

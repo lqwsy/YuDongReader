@@ -23,4 +23,6 @@ public interface BooksDao {
     int insertSelective(Books record);
     int updateByPrimaryKeySelective(Books record);//根据图书ID修改图书状态
     int updateByPrimaryKey(Books record);
+    int getAllBookCount();
+    List<Books> getPageBooks(@Param("startRaw")int startRaw,@Param("count")int count);//参数1,查询开始位置，参数2，查询条数
 }

@@ -28,11 +28,11 @@
   </select>
   
   <select id="getClassificationBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select * from books where iBookClassificationId = #{classificationId,jdbcType=INTEGER}
+  	select * from books where iBookClassificationId = #{classificationId,jdbcType=INTEGER}  and iBookState!=3
   </select>
   
   <select id="getStateBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select * from books where iBookState = #{bookState,jdbcType=INTEGER}
+  	select * from books where iBookState = #{bookState,jdbcType=INTEGER}  and iBookState!=3
   </select>
   
   <select id="getBookById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -44,7 +44,8 @@
   </select>
   
   <select id="getBookBySearchName" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from books where vBookName like "%"#{searchBookName,jdbcType=VARCHAR}"%"
+  	select * from books where iBookState!=3 and (vBookName like "%"#{searchBookName,jdbcType=VARCHAR}"%" 
+  		or vBookAuthor like "%"#{searchBookName,jdbcType=VARCHAR}"%")
   </select>
   
   <select id="getAllBooks" resultMap="BaseResultMap">
@@ -61,6 +62,14 @@
   
    <select id="getDeleteBooks" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select * from books where vUploadPerson = #{uploadPerson,jdbcType=VARCHAR} and iBookState=3
+  </select>
+  
+   <select id="getPageBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from books where iBookState!=3 limit #{startRaw},#{count}
+  </select>
+  
+   <select id="getAllBookCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select COUNT(*) from books where iBookState!=3
   </select>
 
   

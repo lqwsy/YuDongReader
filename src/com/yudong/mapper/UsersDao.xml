@@ -42,6 +42,10 @@
     from users
   </select>
   
+  <select id="getUserByRold" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+    select * from users where iRole = #{role,jdbcType=INTEGER}
+  </select>
+  
   
   <!-- 添加用户 -->
   <insert id="insert" parameterType="com.yudong.entity.Users">
