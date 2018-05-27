@@ -382,30 +382,14 @@ public class BookController {
 	 * 下载图书
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "/bookDownController", method = { RequestMethod.GET})
+	@RequestMapping(value = "/bookDownController", method = { RequestMethod.POST})
 	@ResponseBody
 	public void bookDownController(HttpServletRequest request,HttpServletResponse response) throws IOException {
-
-		String fileName = request.getSession().getServletContext().getRealPath("static/books")+"/test1.txt";  
-        
-        InputStream bis = new BufferedInputStream(new FileInputStream(new File(fileName)));  
-          
-        String filename = "bookName.txt";  
-        
-        filename = URLEncoder.encode(filename,"UTF-8");  
-        
-        response.addHeader("Content-Disposition", "attachment;filename=" + filename);    
-            
-        response.setContentType("multipart/form-data");   
-        
-        BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());  
-        int len = 0;  
-        while((len = bis.read()) != -1){  
-            out.write(len);  
-            out.flush();  
-        }  
-        out.close();
-        bis.close();
+		String bookId = request.getParameter("bookId"); 
+		Books book = bookService.findBookById(Integer.parseInt(bookId));
+        //更新下载量
+        book.setBookDownloads(book.getBookDownloads()+1);
+        bookService.updateBookState(book);
 	}
 
 	/**

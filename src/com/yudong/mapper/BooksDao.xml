@@ -24,7 +24,7 @@
   </sql>
   
   <select id="getBooks" resultMap="BaseResultMap">
-  	select * from books order by iBookDownloads desc limit 7
+  	select * from books order where iBookState!=3 by iBookDownloads desc limit 7
   </select>
   
   <select id="getClassificationBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">

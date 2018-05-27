@@ -74,17 +74,23 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/clientLoginController", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public int clientLoginController(HttpServletRequest request) {
+	public Users clientLoginController(HttpServletRequest request) {
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
 		Users user = userService.findUserByUserName(userName);
 		if(user == null){
-			return 3;//账号不存在
+			user = new Users();
+			user.setUserState(3);
+			System.out.println("账号不存在");
+			return user;//账号不存在
 		}else {
 			if (user.getPassword().equals(JavaMD5Util.encode(password, user.getSalt()))){
-				return 1;//匹配成功
+				System.out.println("匹配成功");
+				return user;//匹配成功
 			}else {
-				return 4;//密码错误
+				user.setUserState(4);
+				System.out.println("密码错误");
+				return user;//密码错误
 			}
 		}
 	}
@@ -418,6 +424,8 @@ s	 */
 			}else{
 				fileName = "static/img/" + cur_user.getHeadImage();//覆盖原来的图片
 			}
+			
+			System.out.println("fileName is == "+fileName);
 			
             File file = new File(serverPath + fileName);
     		if(file.exists()){

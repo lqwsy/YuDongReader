@@ -48,13 +48,10 @@
 			<div class="tpl-left-nav-title">功能列表</div>
 			<div class="tpl-left-nav-list">
 				<ul class="tpl-left-nav-menu">
-					<li class="tpl-left-nav-item"><a href=""
-						class="nav-link active"> <i class="am-icon-home"></i> <span>首页</span>
-					</a></li>
 					<li class="tpl-left-nav-item">
 						<!-- 打开状态 a 标签添加 active 即可   --> 
 						<a href="javascript:;" class="nav-link tpl-left-nav-link-list active"> 
-							<i class="am-icon-bar-chart"></i> 
+							<i class="am-icon-home"></i> 
 							<span>系统管理</span> 
 							<!-- 列表打开状态的i标签添加 tpl-left-nav-more-ico-rotate 图表即90°旋转  -->
 							<i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
