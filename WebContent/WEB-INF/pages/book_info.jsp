@@ -53,6 +53,7 @@
 							<div class="graph-form">
 								<div class="form-body">
 									<form action="${pageContext.request.contextPath}/updateMyBookInfo" method="post" onSubmit="return check()">
+										<input type="hidden" id="updateResult" value="${updateResult}">
 										<div class="form-group">
 											<label for="bookName">图书封面</label><br>
 											<a href="#" data-toggle="modal" data-target="#uploadImgModal">
@@ -68,9 +69,14 @@
 											<label for="bookAuthor">图书作者</label>
 											<input type="text" class="form-control" id="bookAuthor" name="bookAuthor" value="${my_book_info.bookAuthor}">
 										</div>
-										<div class="form-group">
+										<%-- <div class="form-group">
 											<label for="bookIntroduction">图书简介</label>
 											<input type="text" class="form-control" id="bookIntroduction" name="bookIntroduction" value="${my_book_info.bookIntroduction}">
+										</div> --%>
+										<div class="form-group">
+											<label for="bookIntroduction">图书简介</label>
+											<textarea name="bookIntroduction" id="bookIntroduction"
+												cols="100" rows="10" class="form-control1">${my_book_info.bookIntroduction}</textarea>
 										</div>
 										<div class="form-group">
 											<label for="bookFile">图书文件</label> 
@@ -130,7 +136,7 @@
 						</a>
 						<ul id="menu-academico-sub">
 							<li id="menu-academico-boletim" >
-								<a href="${pageContext.request.contextPath}/myBook">我的图书</a>
+								<a href="${pageContext.request.contextPath}/myBook?pageNum=1">我的图书</a>
 							</li>
 							<li id="menu-academico-avaliacoes">
 								<a href="${pageContext.request.contextPath}/uploadBook">图书上传</a>
@@ -179,6 +185,12 @@
 		<script src="static/js/jquery.min.js"></script>
 		<script src="static/js/jquery.Jcrop.min.js"></script>
 		<script>
+			$(document).ready(function(){
+				 var result = $("#updateResult").val();
+				 if(result!=null && result!=undefined && result==1){
+					 alert("修改成功");
+				 }
+			});
 			var toggle = true;
 			$(".sidebar-icon").click(function() {
 				if(toggle) {
@@ -198,7 +210,6 @@
 			});
 			
 			function check(){
-				alert("check");
 				var bookName = $('#bookName').value;
 				var bookAuthor = $('#bookAuthor').value;
 				var bookIntroduction = $('#bookIntroduction').value;

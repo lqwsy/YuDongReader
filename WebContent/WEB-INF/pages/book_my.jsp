@@ -59,18 +59,20 @@
 												<th>图书名称</th>
 												<th>图书作者</th>
 												<th>上传时间</th>
+												<th>下载量</th>
 												<th>状态</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody>
-											<c:if test="${!empty sessionScope.cur_user_books}">
-												<c:forEach items="${sessionScope.cur_user_books}" var="mybook" varStatus="index">
+											<c:if test="${!empty page.list}">
+												<c:forEach items="${page.list}" var="mybook" varStatus="index">
 													<tr>
-														<th scope="row">${index.count}</th>
+														<th scope="row">${index.count+(page.pageNum-1)*10}</th>
 														<td>${mybook.bookName}</td>
 														<td>${mybook.bookAuthor}</td>
 														<td><fmt:formatDate value='${mybook.uploadTime}' pattern='yyyy-MM-dd hh:mm:ss' /></td>
+														<td>${mybook.bookDownloads}</td>
 														<c:choose>
 															<c:when test="${mybook.bookState==1}">
 																<td>未审核</td>
@@ -80,8 +82,8 @@
 															</c:otherwise>
 														</c:choose>
 														<td>
-															<a href="${pageContext.request.contextPath}/myBookInfo?index=${index.count}">编辑</a> |
-															<a href="${pageContext.request.contextPath}/deleteBook?index=${index.count}">删除</a>
+															<a href="${pageContext.request.contextPath}/myBookInfo?bookId=${mybook.bookId}">编辑</a> |
+															<a href="${pageContext.request.contextPath}/deleteBook?bookId=${mybook.bookId}">删除</a>
 														</td>
 													</tr>
 												</c:forEach>
@@ -91,13 +93,12 @@
 								</div>
 							</div>
 							<ul class="pagination pagination-lg">
-								<li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+								<li class="<c:if test='${!page.hasPreviousPage}'> disabled </c:if>"><a href="${pageContext.request.contextPath}/myBook?pageNum=${page.pageNum-1}"><i class="fa fa-angle-left"></i></a></li>
+								<c:forEach items="${page.navigatepageNums}" var="p" >
+									<li class="<c:if test='${page.pageNum == p}'> active </c:if>"><a href="
+										${pageContext.request.contextPath}/myBook?pageNum=${p}">${p}</a></li>
+								</c:forEach>
+								<li class="<c:if test='${!page.hasNextPage}'> disabled </c:if>"><a href="${pageContext.request.contextPath}/myBook?pageNum=${page.pageNum+1}"><i class="fa fa-angle-right"></i></a></li>
 						   </ul>
 						</div>
 					</div>
@@ -140,7 +141,7 @@
 							</a>
 							<ul id="menu-academico-sub">
 								<li id="menu-academico-boletim" >
-									<a href="${pageContext.request.contextPath}/myBook">我的图书</a>
+									<a href="${pageContext.request.contextPath}/myBook?pageNum=1">我的图书</a>
 								</li>
 								<li id="menu-academico-avaliacoes">
 									<a href="${pageContext.request.contextPath}/uploadBook">图书上传</a>

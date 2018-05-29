@@ -140,7 +140,7 @@
 										<c:if test="${!empty page.list}">
 											<c:forEach items="${page.list}" var="book" varStatus="index">
 												<tr>
-													<td>${index.count}</td>
+													<td>${index.count+(page.pageNum-1)*10}</td>
 													<td><a href="${pageContext.request.contextPath}/bookDetail?index=${index.count}">${book.bookName}</a></td>
 													<td>${book.bookAuthor}</td>
 													<c:choose>

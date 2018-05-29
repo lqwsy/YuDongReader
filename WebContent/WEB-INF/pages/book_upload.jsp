@@ -40,7 +40,7 @@
 				<div class="outter-wp">
 					<div class="sub-heard-part">
 						<ol class="breadcrumb m-b-0">
-							<li><a href="${pageContext.request.contextPath}/myBook">首页</a></li>
+							<li><a href="${pageContext.request.contextPath}/myBook?pageNum=1">首页</a></li>
 							<li class="active">图书上传</li>
 						</ol>
 					</div>
@@ -49,6 +49,7 @@
 						<div class="graph-form">
 							<div class="form-body">
 								<form id="bookUploadForm" action="${pageContext.request.contextPath }/bookUploadController" method="post" enctype="multipart/form-data">
+									<input type="hidden" id="uploadResult" value="${upload_result}">
 									<div class="form-group">
 										<label for="bookName">图书名称</label> <input type="text"
 											class="form-control" id="bookName" name="bookName" placeholder="图书名称">
@@ -135,7 +136,7 @@
 				</a>
 				<ul id="menu-academico-sub">
 					<li id="menu-academico-boletim"><a
-						href="${pageContext.request.contextPath}/myBook">我的图书</a></li>
+						href="${pageContext.request.contextPath}/myBook?pageNum=1">我的图书</a></li>
 					<li id="menu-academico-avaliacoes"><a
 						href="${pageContext.request.contextPath}/uploadBook">图书上传</a></li>
 					<li id="menu-academico-avaliacoes"><a
@@ -146,6 +147,12 @@
 	</div>
 	<div class="clearfix"></div>
 	<script>
+		$(document).ready(function(){
+			 var result = $("#uploadResult").val();
+			 if(result!=null && result!=undefined && result==1){
+				 alert("上传成功");
+			 }
+		});
 		var toggle = true;
 		$(".sidebar-icon").click(
 				function() {

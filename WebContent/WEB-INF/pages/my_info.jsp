@@ -131,7 +131,7 @@
 				</a>
 				<ul id="menu-academico-sub">
 					<li id="menu-academico-boletim"><a
-						href="${pageContext.request.contextPath}/myBook">我的图书</a></li>
+						href="${pageContext.request.contextPath}/myBook?pageNum=1">我的图书</a></li>
 					<li id="menu-academico-avaliacoes"><a
 						href="${pageContext.request.contextPath}/uploadBook">图书上传</a></li>
 					<li id="menu-academico-avaliacoes"><a

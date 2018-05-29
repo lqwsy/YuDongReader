@@ -139,6 +139,54 @@ public class UserController {
 		}
 	}
 	
+	
+	/**
+	 * 客户端修改密码控制
+	 */
+	@RequestMapping(value = "/clientUpdatePasswordController", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public int clientUpdatePasswordController(HttpServletRequest request) {
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		String password = request.getParameter("password");
+		String newPassword = request.getParameter("newPassword");
+		Users user = userService.findUserById(userId);
+		if(user != null){//账号存在
+			password  = JavaMD5Util.encode(password, user.getSalt());
+			newPassword = JavaMD5Util.encode(newPassword, user.getSalt());
+			if(password.equals(user.getPassword())){
+				user.setPassword(newPassword);//更换新密码
+				userService.updatePassword(user);//保存到数据库
+				return 1;//返回更改成功标志
+			}else{
+				return 2;
+			}
+		}else {
+			return 3;//账号不存在
+		}
+	}
+	
+	/**
+	 * 客户端修改资料控制
+	 */
+	@RequestMapping(value = "/clientUpdateUserInfoController", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public int clientUpdateUserInfoController(HttpServletRequest request) {
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		String nickName = request.getParameter("nickName");
+		
+		System.out.println("UpdateUserInfo userid is === "+userId);
+		System.out.println("UpdateUserInfo nickName is === "+nickName);
+		
+		Users user = userService.findUserById(userId);
+		if(user != null){//账号存在
+			user.setUserNickName(nickName);
+			userService.updateUserInfo(user);
+			return 1;//返回更改成功标志
+		}else {
+			return 2;//返回更改失败
+		}
+	}
+	
 	/**
 	 * 用户登录 
 	 * @param 
@@ -272,7 +320,7 @@ s	 */
 			if(role == 1 && curUser.getRole()==1){
 				return "redirect:/adminUserManager?role=3&pageNum=1";
 			}else{
-				return "redirect:/myBook";
+				return "redirect:/myBook?pageNum=1";
 			}
 		}else{
 			if(role == 1){

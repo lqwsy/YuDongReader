@@ -24,15 +24,15 @@
   </sql>
   
   <select id="getBooks" resultMap="BaseResultMap">
-  	select * from books order where iBookState!=3 by iBookDownloads desc limit 7
+  	select * from books where iBookState=2 order by iBookDownloads desc limit 7
   </select>
   
   <select id="getClassificationBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select * from books where iBookClassificationId = #{classificationId,jdbcType=INTEGER}  and iBookState!=3
+  	select * from books where iBookClassificationId = #{classificationId,jdbcType=INTEGER}  and  iBookState=2
   </select>
   
   <select id="getStateBooks" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select * from books where iBookState = #{bookState,jdbcType=INTEGER}  and iBookState!=3
+  	select * from books where iBookState = #{bookState,jdbcType=INTEGER}  and  iBookState!=3
   </select>
   
   <select id="getBookById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -44,7 +44,7 @@
   </select>
   
   <select id="getBookBySearchName" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from books where iBookState!=3 and (vBookName like "%"#{searchBookName,jdbcType=VARCHAR}"%" 
+  	select * from books where  iBookState=2 and (vBookName like "%"#{searchBookName,jdbcType=VARCHAR}"%" 
   		or vBookAuthor like "%"#{searchBookName,jdbcType=VARCHAR}"%")
   </select>
   
@@ -53,11 +53,11 @@
   </select>
   
   <select id="getBooksByAuthor" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from books where vBookAuthor = #{author,jdbcType=VARCHAR}
+  	select * from books where vBookAuthor = #{author,jdbcType=VARCHAR} 
   </select>
   
    <select id="getBooksByUploadPerson" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from books where vUploadPerson = #{uploadPerson,jdbcType=VARCHAR} and iBookState!=3
+  	select * from books where vUploadPerson = #{uploadPerson,jdbcType=VARCHAR} and iBookState != 3
   </select>
   
    <select id="getDeleteBooks" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -69,7 +69,7 @@
   </select>
   
    <select id="getAllBookCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-  	select COUNT(*) from books where iBookState!=3
+  	select COUNT(*) from books where iBookState=2
   </select>
 
   

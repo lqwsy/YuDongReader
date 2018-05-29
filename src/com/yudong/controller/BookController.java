@@ -54,14 +54,17 @@ public class BookController {
 	 * @return 跳转到我的图书页面
 	 */
 	@RequestMapping(value = "/myBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBook(HttpSession session,Model model) {
+	public ModelAndView goToMyBook(HttpSession session,int pageNum) {
+		ModelAndView mav = new ModelAndView("book_my");
+		PageHelper.startPage(pageNum, 10);
 		Users cur_user = (Users) session.getAttribute("cur_user");
 		if(cur_user!=null){
 			List<Books> mybooks = bookService.getMyBooks(cur_user.getUserName());
-			session.setAttribute("cur_user_books", mybooks);
-			return "book_my";
+			PageInfo<Books> page=new PageInfo<Books>(mybooks);
+			mav.addObject("page", page);
+			return mav;
 		}
-		return "book_my";
+		return mav;
 	}
 	
 	/**
@@ -73,7 +76,7 @@ public class BookController {
 	@RequestMapping(value = "/adminBookManager", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView goToAdminBookManager(HttpSession session,int pageNum) {
 		ModelAndView mav = new ModelAndView("admin/admin_bookmanage");
-		PageHelper.startPage(pageNum, 2);
+		PageHelper.startPage(pageNum, 10);
 		List<Books> admin_all_books = bookService.getAllBooks();
 		PageInfo<Books> page=new PageInfo<Books>(admin_all_books);
 		mav.addObject("page", page);
@@ -125,7 +128,7 @@ public class BookController {
 				mav.setViewName("redirect:/adminBookManager?pageNum=1");
 				return mav;
 			}else{
-				PageHelper.startPage(1, 2);
+				PageHelper.startPage(1, 10);
 				List<Books> searchBooks = bookService.searchBooks(searchName);
 				PageInfo<Books> page=new PageInfo<Books>(searchBooks);
 				mav.addObject("page", page);
@@ -174,12 +177,11 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/myBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String goToMyBookInfo(HttpSession session,Model model,int index) {
-		if(index!=0){
-			List<Books> myBooks = (List<Books>) session.getAttribute("cur_user_books");
-			session.setAttribute("my_book_info", myBooks.get(index-1));
+	public String goToMyBookInfo(HttpSession session,Model model,int bookId) {
+		if(bookId!=0){
+			Books book = bookService.findBookById(bookId);
+			session.setAttribute("my_book_info", book);
 			return "book_info";
 		}
 		return "book_my";
@@ -190,20 +192,15 @@ public class BookController {
 	 * @param 
 	 * @return 跳转到图书信息页面
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/deleteBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public String deleteBookController(HttpSession session,int index) {
-		if(index!=0){
-			List<Books> myBooks = (List<Books>) session.getAttribute("cur_user_books");
-			Books delete_book = myBooks.get(index-1);
+	public String deleteBookController(HttpSession session,int bookId) {
+		if(bookId!=0){
+			Books delete_book = bookService.findBookById(bookId);
 			delete_book.setBookState(3);//3：图书为删除状态
-			if(bookService.updateBookState(delete_book)){
-				myBooks.remove(index-1);
-				session.setAttribute("cur_user_books", myBooks);
-			}
-			return "book_my";
+			bookService.updateBookState(delete_book);
+			return "redirect:/myBook?pageNum=1";
 		}
-		return "book_my";
+		return "redirect:/myBook?pageNum=1";
 	}
 	
 	/**
@@ -284,9 +281,10 @@ public class BookController {
 	 * @return 图书信息页面
 	 */
 	@RequestMapping(value = "/updateMyBookInfo", method = { RequestMethod.GET, RequestMethod.POST })
-	public String updateMyBookInfoController(HttpSession session,MultipartFile bookFile,Books book) {
+	public ModelAndView updateMyBookInfoController(HttpSession session,MultipartFile bookFile,Books book) {
 		String path = session.getServletContext().getRealPath("static/books/");
 		Books cur_book = (Books) session.getAttribute("my_book_info");
+		ModelAndView mav = new ModelAndView("book_info");
 		if(cur_book != null){
 			try {
 				if(bookFile!=null){
@@ -304,18 +302,19 @@ public class BookController {
 				cur_book.setBookName(book.getBookName());
 				cur_book.setBookAuthor(book.getBookAuthor());
 				cur_book.setBookIntroduction(book.getBookIntroduction());
-				if(bookService.saveBook(cur_book)){//保存到数据库
+				if(bookService.updateBookState(cur_book)){//保存到数据库
 					session.setAttribute("my_book_info", cur_book);
+					mav.addObject("updateResult", 1);
 				}
-				return "book_info";
+				return mav;
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return "book_info";
+			return mav;
 		}
-		return "book_info";
+		return mav;
 	}
 	
 	
@@ -334,10 +333,12 @@ public class BookController {
 	 */
 	@RequestMapping(value = "/bookUploadController", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String bookUploadController(HttpSession session,Books book,MultipartFile bookFile,MultipartFile bookimgFile, HttpServletRequest request) {
+	public ModelAndView bookUploadController(HttpSession session,Books book,MultipartFile bookFile,MultipartFile bookimgFile, HttpServletRequest request) {
 		String path = request.getSession().getServletContext().getRealPath("static/books/");
 		String imgpath = request.getSession().getServletContext().getRealPath("static/bookimg/");
 		Users cur_user = (Users) session.getAttribute("cur_user");
+		
+		ModelAndView mav = new ModelAndView("book_upload");
 		
 		long bookSize = bookFile.getSize();
 		System.out.println("bookupload: bookSize is ==="+bookSize);
@@ -369,13 +370,14 @@ public class BookController {
 			bookFile.transferTo(dir);
 			bookimgFile.transferTo(imgdir);
 			bookService.saveBook(book);//保存到数据库
-			return "redirect:/uploadBook";
+			mav.addObject("upload_result", 1);
+			return mav;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/uploadBook";
+		return mav;
 	}
 
 	/**
