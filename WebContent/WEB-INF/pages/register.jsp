@@ -31,7 +31,7 @@
 				<h3 class="inner-tittle t-inner">注册</h3>
 				<form id="registerForm" action="${pageContext.request.contextPath}/webRegisterController" method="post">
 					<input type="text" class="text" id="userName" name="userName" placeholder="账号">
-					<input type="password" name="password" placeholder="新密码"> 
+					<input type="password" name="password" placeholder="密码"> 
 					<input type="text" name="verCode" class="verCode" placeholder="验证码"> 
 					<div class="sign-up">
 						<a class="read fourth" href="#" onclick="sendVerCode(this)" style="margin:0;float:left;">获取验证码</a>
@@ -40,9 +40,9 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="new">
-						<p>
+						<!-- <p>
 							<label class="checkbox11"><input type="checkbox" name="checkbox"><i> </i>我同意鱼洞阅读用户协议</label>
-						</p>
+						</p> -->
 						<p class="sign">
 							已经注册 ? <a href="${pageContext.request.contextPath}/webLogin">登录</a>
 						</p>

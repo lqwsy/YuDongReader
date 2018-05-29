@@ -38,7 +38,7 @@
 							
 						</div> -->
 						<div class="new">
-							<p><label class="checkbox11"><input type="checkbox" name="checkbox"><i> </i>忘记密码 ?</label></p>
+							<!-- <p><label class="checkbox11"><input type="checkbox" name="checkbox"><i> </i>忘记密码 ?</label></p> -->
 							<p class="sign">还没有账号 ?
 								<a href="${pageContext.request.contextPath}/webRegister">立即注册</a>
 							</p>

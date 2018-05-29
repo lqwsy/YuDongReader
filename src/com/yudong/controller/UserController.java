@@ -216,7 +216,7 @@ public class UserController {
 	public ModelAndView goToAdminUserManager(HttpSession session,int role,int pageNum,Model model) {
 		//获取所有用户
 		ModelAndView mav = new ModelAndView("admin/admin_usermanage");
-		PageHelper.startPage(pageNum, 2);
+		PageHelper.startPage(pageNum, 10);
 		if(role==1||role==2){
 			List<Users> admin_all_users = userService.getUserByRold(role);
 			PageInfo<Users> page=new PageInfo<Users>(admin_all_users);
