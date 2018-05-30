@@ -8,7 +8,7 @@
     <result column="vBookIntroduction" jdbcType="VARCHAR" property="bookIntroduction" />
     <result column="vBookAuthor" jdbcType="VARCHAR" property="bookAuthor" />
     <result column="fBookSize" jdbcType="REAL" property="bookSize" />
-    <result column="dBookPrice" jdbcType="DOUBLE" property="bookPrice" />
+    <result column="vAudit" jdbcType="VARCHAR" property="audit" />
     <result column="vBookCoverPath" jdbcType="VARCHAR" property="bookCoverPath" />
     <result column="vBookLocation" jdbcType="VARCHAR" property="bookLocation" />
     <result column="vUploadPerson" jdbcType="VARCHAR" property="uploadPerson" />
@@ -19,7 +19,7 @@
   
   <sql id="Base_Column_List">
     iBookId, vBookName, iBookClassificationId, vBookIntroduction, vBookAuthor, fBookSize, 
-    dBookPrice, vBookCoverPath, vBookLocation, vUploadPerson, dUploadTime, iBookState, 
+    vAudit, vBookCoverPath, vBookLocation, vUploadPerson, dUploadTime, iBookState, 
     iBookDownloads
   </sql>
   
@@ -81,12 +81,12 @@
   <insert id="insert" parameterType="com.yudong.entity.Books">
     insert into books ( vBookName, iBookClassificationId, 
       vBookIntroduction, vBookAuthor, fBookSize, 
-      dBookPrice, vBookCoverPath, vBookLocation, 
+      vAudit, vBookCoverPath, vBookLocation, 
       vUploadPerson, dUploadTime, iBookState, 
       iBookDownloads)
     values (#{bookName,jdbcType=VARCHAR}, #{bookClassificationId,jdbcType=INTEGER}, 
       #{bookIntroduction,jdbcType=VARCHAR}, #{bookAuthor,jdbcType=VARCHAR}, #{bookSize,jdbcType=REAL}, 
-      #{bookPrice,jdbcType=DOUBLE}, #{bookCoverPath,jdbcType=VARCHAR}, #{bookLocation,jdbcType=VARCHAR}, 
+      #{audit,jdbcType=VARCHAR}, #{bookCoverPath,jdbcType=VARCHAR}, #{bookLocation,jdbcType=VARCHAR}, 
       #{uploadPerson,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}, #{bookState,jdbcType=INTEGER}, 
       #{bookDownloads,jdbcType=INTEGER})
   </insert>
@@ -112,8 +112,8 @@
       <if test="bookSize != null">
         fBookSize,
       </if>
-      <if test="bookPrice != null">
-        dBookPrice,
+      <if test="audit != null">
+        vAudit,
       </if>
       <if test="bookCoverPath != null">
         vBookCoverPath,
@@ -153,8 +153,8 @@
       <if test="bookSize != null">
         #{bookSize,jdbcType=REAL},
       </if>
-      <if test="bookPrice != null">
-        #{bookPrice,jdbcType=DOUBLE},
+      <if test="audit != null">
+        #{audit,jdbcType=VARCHAR},
       </if>
       <if test="bookCoverPath != null">
         #{bookCoverPath,jdbcType=VARCHAR},
@@ -195,8 +195,8 @@
       <if test="bookSize != null">
         fBookSize = #{bookSize,jdbcType=REAL},
       </if>
-      <if test="bookPrice != null">
-        dBookPrice = #{bookPrice,jdbcType=DOUBLE},
+      <if test="audit != null">
+        vAudit = #{audit,jdbcType=VARCHAR},
       </if>
       <if test="bookCoverPath != null">
         vBookCoverPath = #{bookCoverPath,jdbcType=VARCHAR},
@@ -227,7 +227,7 @@
       vBookIntroduction = #{bookIntroduction,jdbcType=VARCHAR},
       vBookAuthor = #{bookAuthor,jdbcType=VARCHAR},
       fBookSize = #{bookSize,jdbcType=REAL},
-      dBookPrice = #{bookPrice,jdbcType=DOUBLE},
+      vAudit = #{audit,jdbcType=VARCHAR},
       vBookCoverPath = #{bookCoverPath,jdbcType=VARCHAR},
       vBookLocation = #{bookLocation,jdbcType=VARCHAR},
       vUploadPerson = #{uploadPerson,jdbcType=VARCHAR},

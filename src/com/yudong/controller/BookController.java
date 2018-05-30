@@ -160,11 +160,20 @@ public class BookController {
 	 * @return 跳转到图书信息页面
 	 */
 	@RequestMapping(value = "/checkBook", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView checkBookController(HttpSession session,int bookState,int bookId) {
+	public ModelAndView checkBookController(HttpSession session,Books book) {
+		int bookState = book.getBookState();
+		int bookId = book.getBookId();
+		String audit = book.getAudit();
+		
+		System.out.println("bookState==="+bookState);
+		System.out.println("bookId==="+bookId);
+		System.out.println("audit==="+audit);
+		
 		Books checkBook = bookService.findBookById(bookId);
 		ModelAndView mav = new ModelAndView("admin/book_detail");
 		if(checkBook.getBookState()!=bookState){
 			checkBook.setBookState(bookState);
+			checkBook.setAudit(audit);
 			if(bookService.updateBookState(checkBook)){
 				mav.addObject("countBook", checkBook);
 			}

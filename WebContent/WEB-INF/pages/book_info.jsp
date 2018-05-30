@@ -69,14 +69,14 @@
 											<label for="bookAuthor">图书作者</label>
 											<input type="text" class="form-control" id="bookAuthor" name="bookAuthor" value="${my_book_info.bookAuthor}">
 										</div>
-										<%-- <div class="form-group">
-											<label for="bookIntroduction">图书简介</label>
-											<input type="text" class="form-control" id="bookIntroduction" name="bookIntroduction" value="${my_book_info.bookIntroduction}">
-										</div> --%>
 										<div class="form-group">
 											<label for="bookIntroduction">图书简介</label>
 											<textarea name="bookIntroduction" id="bookIntroduction"
 												cols="100" rows="10" class="form-control1">${my_book_info.bookIntroduction}</textarea>
+										</div>
+										<div class="form-group">
+											<label for="audit">审核信息</label>
+											<input type="text" class="form-control" id="audit" name="audit" value="${my_book_info.audit}" readonly="readonly">
 										</div>
 										<div class="form-group">
 											<label for="bookFile">图书文件</label> 

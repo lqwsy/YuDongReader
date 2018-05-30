@@ -86,8 +86,9 @@
 				<div class="tpl-block">
 					<div class="am-g">
 						<div class="tpl-form-body tpl-form-line">
-							<form class="am-form tpl-form-line-form">
+							<form id="book-detail-form" class="am-form tpl-form-line-form" action="${pageContext.request.contextPath}/checkBook" method="post">
 								<div class="am-form-group">
+									<input type="hidden" id="bookId" name="bookId" value="${countBook.bookId}">
 									<label for="user-name" class="am-u-sm-3 am-form-label">图书名称</label>
 									<div class="am-u-sm-9">
 										<input type="text" class="tpl-form-input" id="bookName" value="${countBook.bookName}" readonly="readonly">
@@ -96,7 +97,7 @@
 								<div class="am-form-group">
 									<label for="user-name" class="am-u-sm-3 am-form-label">图书作者</label>
 									<div class="am-u-sm-9">
-										<input type="text" class="tpl-form-input" id="user-name" value="${countBook.bookAuthor}" readonly="readonly">
+										<input type="text" class="tpl-form-input" id="bookAuthor" value="${countBook.bookAuthor}" readonly="readonly">
 									</div>
 								</div>
 								<div class="am-form-group">
@@ -146,7 +147,7 @@
 								<div class="am-form-group">
 									<label for="user-phone" class="am-u-sm-3 am-form-label">图书状态 </label>
 									<div class="am-u-sm-9">
-										<select id="bookStateSelected" name="userState" data-am-selected="{searchBox: 0}">
+										<select id="bookStateSelected" name="bookState" data-am-selected="{searchBox: 0}">
 											<c:choose>
 												<c:when test="${countBook.bookState==1}">
 													<option value="1"  selected="selected">未审核</option>
@@ -161,9 +162,15 @@
 									</div>
 								</div>
 								<div class="am-form-group">
+									<label class="am-u-sm-3 am-form-label">审核信息</label>
+									<div class="am-u-sm-9">
+										<input type="text" id="audit" value="${countBook.audit}" name="audit">
+									</div>
+								</div>
+								<div class="am-form-group">
 									<div class="am-u-sm-9 am-u-sm-push-3">
-										<button type="button"
-											class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="checkBook(${countBook.bookId})">确认修改</button>
+										<button type="submit"
+											class="am-btn am-btn-primary tpl-btn-bg-color-success ">确认修改</button>
 										<button type="button"
 											class="am-btn am-btn-primary tpl-btn-bg-color-success " onClick="javascript:history.back(-1)">返回</button>
 									</div>
@@ -189,10 +196,11 @@
 						$("#classificationType").trigger('changed.selected.amui');
 					}
 				});
-		function checkBook(bookId){
-			var bookStates = $('#bookStateSelected').val();
+		function checkBook(){
+			/* var bookStates = $('#bookStateSelected').val();
 			window.location.href = "/YuDongReader/checkBook?bookState="+bookStates+"&bookId="+bookId;
-			window.event.returnValue = false;
+			window.event.returnValue = false; */
+			return true;
 		}
 	</script>
 </body>

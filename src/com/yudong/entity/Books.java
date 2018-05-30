@@ -21,9 +21,9 @@ public class Books implements Serializable{
 
     private Float bookSize;
 
-    private Double bookPrice;
+    private String audit;
 
-    private String bookCoverPath;
+	private String bookCoverPath;
 
     private String bookLocation;
 
@@ -50,6 +50,14 @@ public class Books implements Serializable{
     public void setBookName(String bookName) {
         this.bookName = bookName == null ? null : bookName.trim();
     }
+
+    public String getAudit() {
+		return audit;
+	}
+
+	public void setAudit(String audit) {
+		this.audit = audit;
+	}
 
     public Integer getBookClassificationId() {
         return bookClassificationId;
@@ -81,14 +89,6 @@ public class Books implements Serializable{
 
     public void setBookSize(Float bookSize) {
         this.bookSize = bookSize;
-    }
-
-    public Double getBookPrice() {
-        return bookPrice;
-    }
-
-    public void setBookPrice(Double bookPrice) {
-        this.bookPrice = bookPrice;
     }
 
     public String getBookCoverPath() {
